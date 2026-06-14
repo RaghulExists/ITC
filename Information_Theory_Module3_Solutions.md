@@ -57,7 +57,7 @@ The important special discrete channels are:
 
 4. **Symmetric (uniform) channel** — every row of the channel matrix contains the same set of entries (in some order), and so does every column. Then $H(Y/X)=h$ is constant, and $C=\log_2 m - h$.
 
-5. **Binary Symmetric Channel (BSC)** — a symmetric channel with 2 inputs and 2 outputs; matrix $\begin{bmatrix}p & q\\ q & p\end{bmatrix}$. Capacity $C = 1-h$, $h = p\log_2\tfrac1p + q\log_2\tfrac1q$.
+5. **Binary Symmetric Channel (BSC)** — a symmetric channel with 2 inputs and 2 outputs; its channel matrix has rows $(p,\ q)$ and $(q,\ p)$. Capacity $C = 1-h$, where $h = p\log_2\tfrac1p + q\log_2\tfrac1q$.
 
 6. **Binary Erasure Channel (BEC)** — a symbol is either received correctly or "erased" (output `Y`); no wrong decisions are made. Capacity $C = (1-P)=\bar P$.
 
@@ -95,7 +95,16 @@ and $f(\cdot)$ are probability **density** functions.
 
 Given joint probability matrix:
 
-$$P(X,Y)=\begin{bmatrix} 0.25 & 0 & 0 & 0\\ 0.10 & 0.30 & 0 & 0\\ 0 & 0.05 & 0.10 & 0\\ 0 & 0 & 0.05 & 0.10\\ 0 & 0 & 0.05 & 0 \end{bmatrix}$$
+$$
+P(X,Y)=
+\begin{bmatrix}
+0.25 & 0 & 0 & 0 \\
+0.10 & 0.30 & 0 & 0 \\
+0 & 0.05 & 0.10 & 0 \\
+0 & 0 & 0.05 & 0.10 \\
+0 & 0 & 0.05 & 0
+\end{bmatrix}
+$$
 
 **Step 1 — Marginals.** Row sums → $P(X)$, column sums → $P(Y)$:
 
@@ -130,7 +139,15 @@ $$H(Y/X) = H(X,Y) - H(X) = 2.666 - 2.066 = \mathbf{0.600\ bits/symbol}$$
 
 *(Same as Problem 2 in the notes — identical matrix.)*
 
-$$P(X,Y)=\begin{bmatrix} 0.05 & 0 & 0.20 & 0.05\\ 0 & 0.10 & 0.10 & 0\\ 0 & 0 & 0.20 & 0.10\\ 0.05 & 0.05 & 0 & 0.10 \end{bmatrix}$$
+$$
+P(X,Y)=
+\begin{bmatrix}
+0.05 & 0 & 0.20 & 0.05 \\
+0 & 0.10 & 0.10 & 0 \\
+0 & 0 & 0.20 & 0.10 \\
+0.05 & 0.05 & 0 & 0.10
+\end{bmatrix}
+$$
 
 **Marginals:** $P(X) = [0.30,\ 0.20,\ 0.30,\ 0.20]$, $P(Y) = [0.10,\ 0.15,\ 0.50,\ 0.25]$.
 
@@ -171,7 +188,21 @@ $$I(X;Y) = H(Y) - H(Y/X) = 1.742 - 1.150 = 0.592 \quad\checkmark$$
 
 **Channel:** $x_1\!\to\!y_1=\tfrac34,\ x_1\!\to\!y_2=\tfrac14;\ x_2\!\to\!y_2=\tfrac12,\ x_2\!\to\!y_3=\tfrac12$, with $P(X_1)=P(X_2)=\tfrac12$.
 
-$$P(Y/X) = \begin{bmatrix} 3/4 & 1/4 & 0\\ 0 & 1/2 & 1/2 \end{bmatrix} \;\xrightarrow{\times P(X_i)}\; P(X,Y) = \begin{bmatrix} 3/8 & 1/8 & 0\\ 0 & 1/4 & 1/4 \end{bmatrix}$$
+Multiply each row of the channel matrix by its input probability $P(X_i)=\tfrac12$ to obtain the JPM:
+
+$$
+P(Y/X)=
+\begin{bmatrix}
+3/4 & 1/4 & 0 \\
+0 & 1/2 & 1/2
+\end{bmatrix}
+\qquad
+P(X,Y)=
+\begin{bmatrix}
+3/8 & 1/8 & 0 \\
+0 & 1/4 & 1/4
+\end{bmatrix}
+$$
 
 **Output probabilities:** $P(Y) = \big[\tfrac38,\ \tfrac38,\ \tfrac14\big]$
 
@@ -220,7 +251,14 @@ $$R_t = I(X;Y)\cdot r_s = 0.6556 \times 10000 = \boxed{6556\ \text{bits/sec}}$$
 
 A **Binary Symmetric Channel** has 2 inputs, 2 outputs, error probability $P$ and correct probability $q=1-P$:
 
-$$P(Y/X) = \begin{bmatrix} P & q\\ q & P \end{bmatrix}, \qquad P(X_1)=P(X_2)=\tfrac12$$
+$$
+P(Y/X)=
+\begin{bmatrix}
+P & q \\
+q & P
+\end{bmatrix}
+\qquad P(X_1)=P(X_2)=\tfrac12
+$$
 
 **Derivation.** Because both rows contain the same two entries (just swapped), the conditional entropy is the same constant $h$ for every input:
 
@@ -266,7 +304,13 @@ and $C\cdot r_s$ bits/sec.
 
 In a **Binary Erasure Channel**, a transmitted bit is either received correctly (prob $\bar P = 1-P$) or **erased** to symbol `Y` (prob $P$). No bit is ever flipped, so no wrong decision is made. With $P(X_1)=W$, $P(X_2)=\bar W$:
 
-$$P(Y/X) = \begin{bmatrix} \bar P & P & 0\\ 0 & P & \bar P \end{bmatrix}$$
+$$
+P(Y/X)=
+\begin{bmatrix}
+\bar P & P & 0 \\
+0 & P & \bar P
+\end{bmatrix}
+$$
 
 **Derivation.** Building the JPM and then $P(X/Y)$ gives
 
@@ -311,7 +355,15 @@ $$\boxed{C = \bar P = (1-P)\ \text{bits/symbol}, \qquad C = \bar P\, r_s \ \text
 
 **Channel:** inputs $\{0,1,2,3\}$, outputs $\{0,1,2,3\}$ with $q=1-p$:
 
-$$P(Y/X) = \begin{bmatrix} 1 & 0 & 0 & 0\\ 0 & p & q & 0\\ 0 & q & p & 0\\ 0 & 0 & 0 & 1 \end{bmatrix}$$
+$$
+P(Y/X)=
+\begin{bmatrix}
+1 & 0 & 0 & 0 \\
+0 & p & q & 0 \\
+0 & q & p & 0 \\
+0 & 0 & 0 & 1
+\end{bmatrix}
+$$
 
 **Key observation — the channel splits into two independent sub-channels with disjoint inputs and outputs:**
 
@@ -365,7 +417,21 @@ $$\boxed{C = \log_2\!\Big(2^{C_A} + 2^{C_B}\Big) = \log_2\!\Big(2 + 2^{\,1-H(p)}
 
 ### (i) Given $P(X{=}0)=\tfrac14$, $P(X{=}1)=\tfrac34$, $\alpha=0.75$, $\beta=0.9$
 
-$$P(Y/X) = \begin{bmatrix} 0.75 & 0.25\\ 0.10 & 0.90 \end{bmatrix} \xrightarrow{\times P(X)} P(X,Y) = \begin{bmatrix} 0.1875 & 0.0625\\ 0.075 & 0.675 \end{bmatrix}$$
+Multiply each row of the channel matrix by its input probability to obtain the JPM:
+
+$$
+P(Y/X)=
+\begin{bmatrix}
+0.75 & 0.25 \\
+0.10 & 0.90
+\end{bmatrix}
+\qquad
+P(X,Y)=
+\begin{bmatrix}
+0.1875 & 0.0625 \\
+0.075 & 0.675
+\end{bmatrix}
+$$
 
 **Output marginals:** $P(Y) = [0.2625,\ 0.7375]$.
 
@@ -417,25 +483,54 @@ $$\boxed{C = 1 - h = 1 - 0.8113 = 0.1887\ \text{bits/symbol}}$$
 
 ## Q11 — Muroga's method (theory)
 
-**Muroga's method** estimates the capacity of a discrete channel (whose channel matrix is **square and non-singular**) without searching over input distributions. For an $n$-input channel:
+**Muroga's method** estimates the capacity of a discrete channel whose channel matrix is **square and non-singular** ($n$ inputs, $n$ outputs), without searching over input distributions. (Throughout, $\log \equiv \log_2$.)
 
-**Step 1 — Solve for the auxiliary quantities $Q_1,\dots,Q_n$** from the linear system
+**Step 1 — Set up the matrix equation.** Multiply the channel matrix $P(Y/X)$ by the unknown column vector $\mathbf{Q}=[Q_1,\dots,Q_n]^{T}$, and set it equal to a column vector whose $i$-th entry is the **row-sum** $\sum_j P_{ij}\log_2 P_{ij}$ of that same row:
 
-$$\sum_{j=1}^{n} P(y_j|x_i)\,Q_j = \sum_{j=1}^{n} P(y_j|x_i)\log_2 P(y_j|x_i), \qquad i = 1,\dots,n$$
+$$
+\begin{bmatrix}
+P_{11} & P_{12} & \cdots & P_{1n} \\
+P_{21} & P_{22} & \cdots & P_{2n} \\
+\vdots & \vdots & \ddots & \vdots \\
+P_{n1} & P_{n2} & \cdots & P_{nn}
+\end{bmatrix}
+\begin{bmatrix}
+Q_1 \\
+Q_2 \\
+\vdots \\
+Q_n
+\end{bmatrix}
+=
+\begin{bmatrix}
+P_{11}\log P_{11} + P_{12}\log P_{12} + \cdots + P_{1n}\log P_{1n} \\
+P_{21}\log P_{21} + P_{22}\log P_{22} + \cdots + P_{2n}\log P_{2n} \\
+\vdots \\
+P_{n1}\log P_{n1} + P_{n2}\log P_{n2} + \cdots + P_{nn}\log P_{nn}
+\end{bmatrix}
+$$
 
-i.e. (matrix form) $[\,P(Y/X)\,]\,\mathbf{Q} = \mathbf{r}$, where each element of $\mathbf{r}$ is the row-sum $\sum_j P_{ij}\log_2 P_{ij}$.
+The left matrix is the **channel matrix** $P(Y/X)$; the middle column is the unknown vector $\mathbf{Q}$; the right column is the **row-sums** vector. Here $P_{ij} = P(y_j\,|\,x_i)$ is the entry in **row $i$, column $j$** of the channel matrix.
 
-**Step 2 — Capacity:**
+**Step 2 — Solve the $n$ simultaneous equations** for $Q_1,\dots,Q_n$.
 
-$$C = \log_2\!\Big[\sum_{j=1}^{n} 2^{\,Q_j}\Big]\ \text{bits/symbol}$$
+**Step 3 — Capacity:**
 
-> **Steps explained:** The right-hand side of each equation is the (negative) row entropy of the channel matrix. Solving the linear system gives the $Q_j$; the capacity is the log of the sum of $2^{Q_j}$. This works only when the channel matrix is square and invertible.
+$$C = \log_2\!\Big[\,2^{Q_1}+2^{Q_2}+\cdots+2^{Q_n}\,\Big]\ \text{bits/symbol}$$
+
+> **Steps explained:** Each row of the matrix equation reads "(row of channel matrix) · $\mathbf{Q}$ = (that row's $\sum P\log P$)". The right-hand vector is just the **negative row-entropy** of each row. Solve the linear system, then take $C=\log_2\sum 2^{Q_j}$. Works only for a **square, invertible** channel matrix.
 
 ---
 
 ## Q12 — Muroga's method (3×3)
 
-$$P(Y/X) = \begin{bmatrix} 0.8 & 0.2 & 0\\ 0.1 & 0.8 & 0.1\\ 0 & 0.2 & 0.8 \end{bmatrix}$$
+$$
+P(Y/X)=
+\begin{bmatrix}
+0.8 & 0.2 & 0 \\
+0.1 & 0.8 & 0.1 \\
+0 & 0.2 & 0.8
+\end{bmatrix}
+$$
 
 **LaTeX (TikZ) — channel diagram:**
 
@@ -464,19 +559,42 @@ $$P(Y/X) = \begin{bmatrix} 0.8 & 0.2 & 0\\ 0.1 & 0.8 & 0.1\\ 0 & 0.2 & 0.8 \end{
 \end{document}
 ```
 
-**Step 1 — Right-hand side $r_i = \sum_j P_{ij}\log_2 P_{ij}$:**
+**Step 1 — Write the matrix equation** $P(Y/X)\,\mathbf{Q} = \mathbf{r}$, where each RHS entry is that row's $\sum_j P_{ij}\log_2 P_{ij}$:
 
-$$r_1 = 0.8\log_2 0.8 + 0.2\log_2 0.2 = -0.7219$$
-$$r_2 = 0.1\log_2 0.1 + 0.8\log_2 0.8 + 0.1\log_2 0.1 = -0.9219$$
-$$r_3 = 0.2\log_2 0.2 + 0.8\log_2 0.8 = -0.7219$$
+$$
+\begin{bmatrix}
+0.8 & 0.2 & 0 \\
+0.1 & 0.8 & 0.1 \\
+0 & 0.2 & 0.8
+\end{bmatrix}
+\begin{bmatrix}
+Q_1 \\
+Q_2 \\
+Q_3
+\end{bmatrix}
+=
+\begin{bmatrix}
+0.8\log_2 0.8 + 0.2\log_2 0.2 + 0 \\
+0.1\log_2 0.1 + 0.8\log_2 0.8 + 0.1\log_2 0.1 \\
+0 + 0.2\log_2 0.2 + 0.8\log_2 0.8
+\end{bmatrix}
+=
+\begin{bmatrix}
+-0.7219 \\
+-0.9219 \\
+-0.7219
+\end{bmatrix}
+$$
 
-**Step 2 — Linear system $[P(Y/X)]\mathbf{Q}=\mathbf{r}$:**
+**Step 2 — Expand into 3 simultaneous equations** (each row of the matrix product):
 
-$$0.8Q_1 + 0.2Q_2 = -0.7219$$
-$$0.1Q_1 + 0.8Q_2 + 0.1Q_3 = -0.9219$$
-$$0.2Q_2 + 0.8Q_3 = -0.7219$$
+$$0.8\,Q_1 + 0.2\,Q_2 + 0\,Q_3 = -0.7219 \qquad (1)$$
 
-By symmetry $Q_1 = Q_3$. Solving:
+$$0.1\,Q_1 + 0.8\,Q_2 + 0.1\,Q_3 = -0.9219 \qquad (2)$$
+
+$$0\,Q_1 + 0.2\,Q_2 + 0.8\,Q_3 = -0.7219 \qquad (3)$$
+
+Equations (1) and (3) are mirror images $\Rightarrow$ by symmetry $Q_1 = Q_3$. Solving:
 
 $$\boxed{Q_1 = Q_3 = -0.6553, \qquad Q_2 = -0.9886}$$
 
@@ -491,7 +609,13 @@ $$\boxed{C = 0.827\ \text{bits/symbol}}$$
 
 ## Q13 — BSC capacity by Muroga + verify
 
-$$P(Y/X) = \begin{bmatrix} 3/4 & 1/4\\ 1/4 & 3/4 \end{bmatrix}$$
+$$
+P(Y/X)=
+\begin{bmatrix}
+3/4 & 1/4 \\
+1/4 & 3/4
+\end{bmatrix}
+$$
 
 **LaTeX (TikZ) — BSC channel diagram:**
 
@@ -515,13 +639,36 @@ $$P(Y/X) = \begin{bmatrix} 3/4 & 1/4\\ 1/4 & 3/4 \end{bmatrix}$$
 \end{document}
 ```
 
-**Step 1 — RHS:**
-$$r_1 = 0.75\log_2 0.75 + 0.25\log_2 0.25 = -0.8113 = r_2$$
+**Step 1 — Write the matrix equation** $P(Y/X)\,\mathbf{Q} = \mathbf{r}$:
 
-**Step 2 — System:**
-$$0.75Q_1 + 0.25Q_2 = -0.8113, \qquad 0.25Q_1 + 0.75Q_2 = -0.8113$$
+$$
+\begin{bmatrix}
+3/4 & 1/4 \\
+1/4 & 3/4
+\end{bmatrix}
+\begin{bmatrix}
+Q_1 \\
+Q_2
+\end{bmatrix}
+=
+\begin{bmatrix}
+\tfrac34\log_2\tfrac34 + \tfrac14\log_2\tfrac14 \\
+\tfrac14\log_2\tfrac14 + \tfrac34\log_2\tfrac34
+\end{bmatrix}
+=
+\begin{bmatrix}
+-0.8113 \\
+-0.8113
+\end{bmatrix}
+$$
 
-By symmetry $Q_1 = Q_2 = -0.8113$.
+**Step 2 — Expand into 2 simultaneous equations:**
+
+$$0.75\,Q_1 + 0.25\,Q_2 = -0.8113 \qquad (1)$$
+
+$$0.25\,Q_1 + 0.75\,Q_2 = -0.8113 \qquad (2)$$
+
+By symmetry $Q_1 = Q_2$. Adding (1) and (2): $Q_1+Q_2 = -1.6226 \Rightarrow Q_1 = Q_2 = -0.8113$.
 
 **Step 3 — Capacity:**
 $$C = \log_2\big[2^{-0.8113} + 2^{-0.8113}\big] = \log_2\big[2\cdot 2^{-0.8113}\big] = 1 - 0.8113 = \boxed{0.1887\ \text{bits/symbol}}$$
