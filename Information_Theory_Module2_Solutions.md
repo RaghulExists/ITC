@@ -470,7 +470,28 @@ $$K = \sum_{i=1}^{q} r^{-l_i} \leq 1$$
 
 The prefixes of `1110` are `1`, `11`, `111` — none is a codeword → **prefix (instantaneous) code**. By contrast, codes `{0, 01, 011, 0111}` fail, since `0`, `01`, `011` are themselves codewords.
 
-> **Steps explained:** State the definition, then the three consequences (instantaneous, uniquely decodable, Kraft). The worked check shows how to verify the property: list the prefixes of the longest codeword(s) and confirm none appears as another codeword.
+**LaTeX (TikZ/forest) — code tree of the prefix code {0, 10, 110, 1110}** (every codeword sits at a *leaf*, never on the path to another — that is what "prefix-free" looks like):
+
+```latex
+\documentclass{standalone}
+\usepackage{forest}
+\begin{document}
+\begin{forest}
+for tree={grow'=east, parent anchor=east, child anchor=west, edge={-Stealth},
+          l sep=14mm, s sep=4mm, font=\footnotesize}
+[{root}
+  [{$S_1=0$}, edge label={node[midway,above,font=\tiny]{0}}]
+  [{$\bullet$}, edge label={node[midway,below,font=\tiny]{1}}
+    [{$S_2=10$}, edge label={node[midway,above,font=\tiny]{0}}]
+    [{$\bullet$}, edge label={node[midway,below,font=\tiny]{1}}
+      [{$S_3=110$}, edge label={node[midway,above,font=\tiny]{0}}]
+      [{$S_4=1110$}, edge label={node[midway,below,font=\tiny]{1}}]]]
+]
+\end{forest}
+\end{document}
+```
+
+> **Steps explained:** State the definition, then the three consequences (instantaneous, uniquely decodable, Kraft). The worked check shows how to verify the property: list the prefixes of the longest codeword(s) and confirm none appears as another codeword. In the code tree, a prefix-free code has **all codewords at leaves** — no codeword lies on the branch leading to another.
 
 ---
 
@@ -576,25 +597,75 @@ $$L = 0.7(1)+0.15(2)+0.15(2) = 1.3 \qquad H(S) = 0.7\log_2\tfrac{1}{0.7}+2(0.15)
 
 $$\eta_c^{(1)} = \frac{1.1813}{1.3} = 90.87\%$$
 
-**2nd extension** ($3^2 = 9$ symbols). With $A=0.7,B=0.15,C=0.15$:
+**LaTeX (TikZ/forest) — basic-source Huffman tree** (internal nodes = combined probability, edges = bit):
 
-| Symbol | $P_i$  | $l_i$ |
-|--------|--------|-------|
-| AA     | 0.49   | 1     |
-| AB     | 0.105  | 3     |
-| AC     | 0.105  | 3     |
-| BA     | 0.105  | 3     |
-| CA     | 0.105  | 4     |
-| BB     | 0.0225 | 6     |
-| BC     | 0.0225 | 6     |
-| CB     | 0.0225 | 6     |
-| CC     | 0.0225 | 6     |
+```latex
+\documentclass{standalone}
+\usepackage{forest}
+\begin{document}
+\begin{forest}
+for tree={grow'=east, parent anchor=east, child anchor=west, edge={-Stealth},
+          l sep=16mm, s sep=5mm, font=\small}
+[{$1.0$}
+  [{$s_1$ (0.7) $\to$ 0}, edge label={node[midway,above,font=\tiny]{0}}]
+  [{$0.3$}, edge label={node[midway,below,font=\tiny]{1}}
+    [{$s_2$ (0.15) $\to$ 10}, edge label={node[midway,above,font=\tiny]{0}}]
+    [{$s_3$ (0.15) $\to$ 11}, edge label={node[midway,below,font=\tiny]{1}}]]
+]
+\end{forest}
+\end{document}
+```
+
+**2nd extension** ($3^2 = 9$ symbols). With $A=0.7,B=0.15,C=0.15$, the codewords are read from the extended-source Huffman tree below:
+
+| Symbol | $P_i$  | Code | $l_i$ |
+|--------|--------|--------|-------|
+| AA     | 0.49   | 0      | 1     |
+| AB     | 0.105  | 100    | 3     |
+| AC     | 0.105  | 101    | 3     |
+| BA     | 0.105  | 110    | 3     |
+| CA     | 0.105  | 1110   | 4     |
+| BB     | 0.0225 | 111100 | 6     |
+| BC     | 0.0225 | 111101 | 6     |
+| CB     | 0.0225 | 111110 | 6     |
+| CC     | 0.0225 | 111111 | 6     |
 
 $$L_2 = 0.49(1) + 3(0.105)(3) + 0.105(4) + 4(0.0225)(6) = 2.395$$
 
 $$H(S^2) = 2H(S) = 2.3626 \qquad \eta_c^{(2)} = \frac{2.3626}{2.395} = 98.65\%$$
 
 **Improvement** $= 98.65\% - 90.87\% = \mathbf{7.78\%}$
+
+**LaTeX (TikZ/forest) — 2nd-extension Huffman tree:**
+
+```latex
+\documentclass{standalone}
+\usepackage{forest}
+\begin{document}
+\begin{forest}
+for tree={grow'=east, parent anchor=east, child anchor=west, edge={-Stealth},
+          l sep=14mm, s sep=2mm, font=\footnotesize}
+[{$1.0$}
+  [{AA (0.49)}, edge label={node[midway,above,font=\tiny]{0}}]
+  [{$0.51$}, edge label={node[midway,below,font=\tiny]{1}}
+    [{$0.21$}, edge label={node[midway,above,font=\tiny]{0}}
+      [{AB (0.105)}, edge label={node[midway,above,font=\tiny]{0}}]
+      [{AC (0.105)}, edge label={node[midway,below,font=\tiny]{1}}]]
+    [{$0.30$}, edge label={node[midway,below,font=\tiny]{1}}
+      [{BA (0.105)}, edge label={node[midway,above,font=\tiny]{0}}]
+      [{$0.195$}, edge label={node[midway,below,font=\tiny]{1}}
+        [{CA (0.105)}, edge label={node[midway,above,font=\tiny]{0}}]
+        [{$0.09$}, edge label={node[midway,below,font=\tiny]{1}}
+          [{$0.045$}, edge label={node[midway,above,font=\tiny]{0}}
+            [{BB (0.0225)}, edge label={node[midway,above,font=\tiny]{0}}]
+            [{BC (0.0225)}, edge label={node[midway,below,font=\tiny]{1}}]]
+          [{$0.045$}, edge label={node[midway,below,font=\tiny]{1}}
+            [{CB (0.0225)}, edge label={node[midway,above,font=\tiny]{0}}]
+            [{CC (0.0225)}, edge label={node[midway,below,font=\tiny]{1}}]]]]]]
+]
+\end{forest}
+\end{document}
+```
 
 > **Steps explained:** Build the 9-symbol extended source ($P$ = products of the basic probabilities), run Huffman on it, then compare $\eta_c$. Encoding pairs of symbols squeezes more redundancy out, raising efficiency by ~7.8%.
 
@@ -625,6 +696,35 @@ $$L = 0.22(2)+0.20(2)+0.18(3)+0.15(3)+0.10(3)+0.08(4)+0.05(5)+0.02(5) = 2.80$$
 
 $$\eta_c = \frac{2.7536}{2.80} = 98.34\%$$
 
+**LaTeX (TikZ/forest) — binary Huffman tree** (internal nodes = combined probability, edges = bit):
+
+```latex
+\documentclass{standalone}
+\usepackage{forest}
+\begin{document}
+\begin{forest}
+for tree={grow'=east, parent anchor=east, child anchor=west, edge={-Stealth},
+          l sep=14mm, s sep=2mm, font=\footnotesize}
+[{$1.0$}
+  [{$0.58$}, edge label={node[midway,above,font=\tiny]{0}}
+    [{$0.33$}, edge label={node[midway,above,font=\tiny]{0}}
+      [{C (0.18)}, edge label={node[midway,above,font=\tiny]{0}}]
+      [{D (0.15)}, edge label={node[midway,below,font=\tiny]{1}}]]
+    [{$0.25$}, edge label={node[midway,below,font=\tiny]{1}}
+      [{$0.15$}, edge label={node[midway,above,font=\tiny]{0}}
+        [{F (0.08)}, edge label={node[midway,above,font=\tiny]{0}}]
+        [{$0.07$}, edge label={node[midway,below,font=\tiny]{1}}
+          [{G (0.05)}, edge label={node[midway,above,font=\tiny]{0}}]
+          [{H (0.02)}, edge label={node[midway,below,font=\tiny]{1}}]]]
+      [{E (0.10)}, edge label={node[midway,below,font=\tiny]{1}}]]]
+  [{$0.42$}, edge label={node[midway,below,font=\tiny]{1}}
+    [{A (0.22)}, edge label={node[midway,above,font=\tiny]{0}}]
+    [{B (0.20)}, edge label={node[midway,below,font=\tiny]{1}}]]
+]
+\end{forest}
+\end{document}
+```
+
 ### (ii) Ternary code — $n=\frac{8-3}{3-1}=2.5$ ❌ → add **1 dummy** (prob 0) → $n=\frac{9-3}{2}=3$ ✓
 
 | Symbol | $P_i$ | Code | $l_i$ |
@@ -642,6 +742,33 @@ $$\eta_c = \frac{2.7536}{2.80} = 98.34\%$$
 $$L_3 = 0.22(1)+0.20(2)+0.18(2)+0.15(2)+0.10(2)+0.08(2)+0.05(3)+0.02(3) = 1.85 \text{ trinits/symbol}$$
 
 $$H_3(S) = \frac{H(S)}{\log_2 3} = \frac{2.7536}{1.585} = 1.7373 \qquad \eta_c = \frac{1.7373}{1.85} = 93.91\%$$
+
+**LaTeX (TikZ/forest) — ternary Huffman tree** (3-way merges; edges = ternary digit 0/1/2):
+
+```latex
+\documentclass{standalone}
+\usepackage{forest}
+\begin{document}
+\begin{forest}
+for tree={grow'=east, parent anchor=east, child anchor=west, edge={-Stealth},
+          l sep=14mm, s sep=2mm, font=\footnotesize}
+[{$1.0$}
+  [{A (0.22)}, edge label={node[midway,above,font=\tiny]{0}}]
+  [{$0.53$}, edge label={node[midway,above,font=\tiny]{1}}
+    [{B (0.20)}, edge label={node[midway,above,font=\tiny]{0}}]
+    [{C (0.18)}, edge label={node[midway,above,font=\tiny]{1}}]
+    [{D (0.15)}, edge label={node[midway,below,font=\tiny]{2}}]]
+  [{$0.25$}, edge label={node[midway,below,font=\tiny]{2}}
+    [{E (0.10)}, edge label={node[midway,above,font=\tiny]{0}}]
+    [{F (0.08)}, edge label={node[midway,above,font=\tiny]{1}}]
+    [{$0.07$}, edge label={node[midway,below,font=\tiny]{2}}
+      [{G (0.05)}, edge label={node[midway,above,font=\tiny]{0}}]
+      [{H (0.02)}, edge label={node[midway,above,font=\tiny]{1}}]
+      [{dummy (0)}, edge label={node[midway,below,font=\tiny]{2}}]]]
+]
+\end{forest}
+\end{document}
+```
 
 > **Steps explained:** Binary merges 2-at-a-time; ternary merges 3-at-a-time but only after padding with a dummy so the reduction ends on exactly 3 symbols. Note the ternary code is **less** efficient — the next question explains why.
 
@@ -677,6 +804,35 @@ $$H_4(S) = \frac{H(S)}{\log_2 4} = \frac{2.7536}{2} = 1.3768 \qquad \eta_c = \fr
 
 **Conclusion:** quaternary $\eta_c = 93.66\% <$ binary $98.34\%$ — the quaternary code is **worse**.
 
+*(The binary Huffman tree for part (i) is the one drawn in [Q15(i)](#q15--huffman-binary--ternary-8-symbols) — same 8 symbols.)*
+
+**LaTeX (TikZ/forest) — quaternary Huffman tree** (4-way merges; edges = quaternary digit 0/1/2/3):
+
+```latex
+\documentclass{standalone}
+\usepackage{forest}
+\begin{document}
+\begin{forest}
+for tree={grow'=east, parent anchor=east, child anchor=west, edge={-Stealth},
+          l sep=14mm, s sep=2mm, font=\footnotesize}
+[{$1.0$}
+  [{A (0.22)}, edge label={node[midway,above,font=\tiny]{0}}]
+  [{B (0.20)}, edge label={node[midway,above,font=\tiny]{1}}]
+  [{C (0.18)}, edge label={node[midway,above,font=\tiny]{2}}]
+  [{$0.40$}, edge label={node[midway,below,font=\tiny]{3}}
+    [{D (0.15)}, edge label={node[midway,above,font=\tiny]{0}}]
+    [{E (0.10)}, edge label={node[midway,above,font=\tiny]{1}}]
+    [{F (0.08)}, edge label={node[midway,above,font=\tiny]{2}}]
+    [{$0.07$}, edge label={node[midway,below,font=\tiny]{3}}
+      [{G (0.05)}, edge label={node[midway,above,font=\tiny]{0}}]
+      [{H (0.02)}, edge label={node[midway,above,font=\tiny]{1}}]
+      [{dummy (0)}, edge label={node[midway,above,font=\tiny]{2}}]
+      [{dummy (0)}, edge label={node[midway,below,font=\tiny]{3}}]]]
+]
+\end{forest}
+\end{document}
+```
+
 > **Why worse?** A larger $r$ forces each symbol into fewer, "wider" digits, and the padding dummies waste part of the code space. As $r$ increases, the granularity of length choices gets coarser, so $L$ cannot hug $H_r(S)$ as tightly ⇒ efficiency drops.
 
 ---
@@ -705,6 +861,33 @@ $$H(S) = 2(0.25)\log_2 4 + 3(0.125)\log_2 8 + 2(0.0625)\log_2 16 = 2.625$$
 
 **Efficiency:** $\eta_c = \dfrac{2.625}{2.625} = \mathbf{100\%}$
 
+**LaTeX (TikZ/forest) — Huffman tree (combine as high as possible):**
+
+```latex
+\documentclass{standalone}
+\usepackage{forest}
+\begin{document}
+\begin{forest}
+for tree={grow'=east, parent anchor=east, child anchor=west, edge={-Stealth},
+          l sep=14mm, s sep=2mm, font=\footnotesize}
+[{$1.0$}
+  [{$0.50$}, edge label={node[midway,above,font=\tiny]{0}}
+    [{S0 (0.25)}, edge label={node[midway,above,font=\tiny]{0}}]
+    [{$0.25$}, edge label={node[midway,below,font=\tiny]{1}}
+      [{S2 (0.125)}, edge label={node[midway,above,font=\tiny]{0}}]
+      [{S3 (0.125)}, edge label={node[midway,below,font=\tiny]{1}}]]]
+  [{$0.50$}, edge label={node[midway,below,font=\tiny]{1}}
+    [{S1 (0.25)}, edge label={node[midway,above,font=\tiny]{0}}]
+    [{$0.25$}, edge label={node[midway,below,font=\tiny]{1}}
+      [{S4 (0.125)}, edge label={node[midway,above,font=\tiny]{0}}]
+      [{$0.125$}, edge label={node[midway,below,font=\tiny]{1}}
+        [{S5 (0.0625)}, edge label={node[midway,above,font=\tiny]{0}}]
+        [{S6 (0.0625)}, edge label={node[midway,below,font=\tiny]{1}}]]]]
+]
+\end{forest}
+\end{document}
+```
+
 > **Why 100%?** Each $P_i = 2^{-l_i}$ is an exact power of ½, so the optimal (Huffman) length equals the self-information $l_i = \log_2(1/P_i)$ — an integer. Therefore $L = H(S)$ exactly, giving 100% efficiency. (Same reason as the Shannon-Fano case in Q9.)
 
 ---
@@ -719,75 +902,98 @@ $$L = 2.80 \text{ binits/symbol}$$
 
 ### (i) Composite placed **as LOW as possible** (skewed tree)
 
-| Symbol | $P_i$ | $l_i$ |
-|--------|-------|-------|
-| $s_1$  | 0.25  | 2     |
-| $s_2$  | 0.20  | 2     |
-| $s_3$  | 0.15  | 3     |
-| $s_4$  | 0.15  | 3     |
-| $s_5$  | 0.10  | 3     |
-| $s_6$  | 0.05  | 5     |
-| $s_7$  | 0.05  | 5     |
-| $s_8$  | 0.05  | 4     |
+| Symbol | $P_i$ | Code | $l_i$ |
+|--------|-------|------|-------|
+| $s_1$  | 0.25  | 00    | 2     |
+| $s_2$  | 0.20  | 01    | 2     |
+| $s_3$  | 0.15  | 100   | 3     |
+| $s_4$  | 0.15  | 101   | 3     |
+| $s_5$  | 0.10  | 110   | 3     |
+| $s_8$  | 0.05  | 1110  | 4     |
+| $s_6$  | 0.05  | 11110 | 5     |
+| $s_7$  | 0.05  | 11111 | 5     |
 
 $$\text{Var}(l) = \sum P_i (l_i - L)^2$$
 $$= 0.25(0.64)+0.20(0.64)+0.15(0.04)+0.15(0.04)+0.10(0.04)+0.05(4.84)+0.05(4.84)+0.05(1.44)$$
 $$= \mathbf{0.86}$$
 
+**LaTeX (TikZ/forest) — "as low as possible" Huffman tree** (composite pushed down → one deep tail):
+
+```latex
+\documentclass{standalone}
+\usepackage{forest}
+\begin{document}
+\begin{forest}
+for tree={grow'=east, parent anchor=east, child anchor=west, edge={-Stealth},
+          l sep=14mm, s sep=2mm, font=\footnotesize}
+[{$1.0$}
+  [{$0.45$}, edge label={node[midway,above,font=\tiny]{0}}
+    [{$s_1$ (0.25)}, edge label={node[midway,above,font=\tiny]{0}}]
+    [{$s_2$ (0.20)}, edge label={node[midway,below,font=\tiny]{1}}]]
+  [{$0.55$}, edge label={node[midway,below,font=\tiny]{1}}
+    [{$0.30$}, edge label={node[midway,above,font=\tiny]{0}}
+      [{$s_3$ (0.15)}, edge label={node[midway,above,font=\tiny]{0}}]
+      [{$s_4$ (0.15)}, edge label={node[midway,below,font=\tiny]{1}}]]
+    [{$0.25$}, edge label={node[midway,below,font=\tiny]{1}}
+      [{$s_5$ (0.10)}, edge label={node[midway,above,font=\tiny]{0}}]
+      [{$0.15$}, edge label={node[midway,below,font=\tiny]{1}}
+        [{$s_8$ (0.05)}, edge label={node[midway,above,font=\tiny]{0}}]
+        [{$0.10$}, edge label={node[midway,below,font=\tiny]{1}}
+          [{$s_6$ (0.05)}, edge label={node[midway,above,font=\tiny]{0}}]
+          [{$s_7$ (0.05)}, edge label={node[midway,below,font=\tiny]{1}}]]]]]
+]
+\end{forest}
+\end{document}
+```
+
 ### (ii) Composite placed **as HIGH as possible** (balanced tree)
 
-| Symbol | $P_i$ | $l_i$ |
-|--------|-------|-------|
-| $s_1$  | 0.25  | 2     |
-| $s_2$  | 0.20  | 2     |
-| $s_3$  | 0.15  | 3     |
-| $s_4$  | 0.15  | 3     |
-| $s_5$  | 0.10  | 4     |
-| $s_6$  | 0.05  | 4     |
-| $s_7$  | 0.05  | 4     |
-| $s_8$  | 0.05  | 4     |
+| Symbol | $P_i$ | Code | $l_i$ |
+|--------|-------|------|-------|
+| $s_1$  | 0.25  | 00   | 2     |
+| $s_2$  | 0.20  | 01   | 2     |
+| $s_3$  | 0.15  | 100  | 3     |
+| $s_4$  | 0.15  | 110  | 3     |
+| $s_5$  | 0.10  | 1010 | 4     |
+| $s_6$  | 0.05  | 1110 | 4     |
+| $s_7$  | 0.05  | 1111 | 4     |
+| $s_8$  | 0.05  | 1011 | 4     |
 
 $$\text{Var}(l) = 0.25(0.64)+0.20(0.64)+0.15(0.04)+0.15(0.04)+0.10(1.44)+0.05(1.44)+0.05(1.44)+0.05(1.44)$$
 $$= \mathbf{0.66}$$
 
 > **Comment:** Both codes are optimal ($L=2.80$), but placing the composite symbol **as high as possible gives the smaller variance** (0.66 vs 0.86). Lower variance ⇒ more uniform codeword lengths ⇒ steadier buffer/transmission behaviour. This is the preferred placement.
 
-**LaTeX (TikZ) — "as high as possible" Huffman tree:**
+**LaTeX (TikZ/forest) — "as high as possible" Huffman tree** (balanced; all four rare symbols at depth 4):
 
 ```latex
 \documentclass{standalone}
-\usepackage{tikz}
-\usetikzlibrary{trees}
+\usepackage{forest}
 \begin{document}
-\begin{tikzpicture}[level distance=12mm,
-  level/.style={sibling distance=48mm/(#1)},
-  every node/.style={draw,circle,inner sep=1pt,minimum size=6mm,font=\scriptsize}]
-\node {1.0}
-  child {node {0.55}
-    child {node {$s_1$} edge from parent node[left,draw=none]{0}}
-    child {node {0.30}
-      child {node {$s_3$} edge from parent node[left,draw=none]{0}}
-      child {node {$s_4$} edge from parent node[right,draw=none]{1}}
-      edge from parent node[right,draw=none]{1}}
-    edge from parent node[left,draw=none]{0}}
-  child {node {0.45}
-    child {node {$s_2$} edge from parent node[left,draw=none]{0}}
-    child {node {0.25}
-      child {node {$s_5$} edge from parent node[left,draw=none]{0}}
-      child {node {0.15}
-        child {node {$s_8$} edge from parent node[left,draw=none]{0}}
-        child {node {0.10}
-          child {node {$s_6$} edge from parent node[left,draw=none]{0}}
-          child {node {$s_7$} edge from parent node[right,draw=none]{1}}
-          edge from parent node[right,draw=none]{1}}
-        edge from parent node[right,draw=none]{1}}
-      edge from parent node[right,draw=none]{1}}
-    edge from parent node[right,draw=none]{1}};
-\end{tikzpicture}
+\begin{forest}
+for tree={grow'=east, parent anchor=east, child anchor=west, edge={-Stealth},
+          l sep=14mm, s sep=2mm, font=\footnotesize}
+[{$1.0$}
+  [{$0.45$}, edge label={node[midway,above,font=\tiny]{0}}
+    [{$s_1$ (0.25)}, edge label={node[midway,above,font=\tiny]{0}}]
+    [{$s_2$ (0.20)}, edge label={node[midway,below,font=\tiny]{1}}]]
+  [{$0.55$}, edge label={node[midway,below,font=\tiny]{1}}
+    [{$0.30$}, edge label={node[midway,above,font=\tiny]{0}}
+      [{$s_3$ (0.15)}, edge label={node[midway,above,font=\tiny]{0}}]
+      [{$0.15$}, edge label={node[midway,below,font=\tiny]{1}}
+        [{$s_5$ (0.10)}, edge label={node[midway,above,font=\tiny]{0}}]
+        [{$s_8$ (0.05)}, edge label={node[midway,below,font=\tiny]{1}}]]]
+    [{$0.25$}, edge label={node[midway,below,font=\tiny]{1}}
+      [{$s_4$ (0.15)}, edge label={node[midway,above,font=\tiny]{0}}]
+      [{$0.10$}, edge label={node[midway,below,font=\tiny]{1}}
+        [{$s_6$ (0.05)}, edge label={node[midway,above,font=\tiny]{0}}]
+        [{$s_7$ (0.05)}, edge label={node[midway,below,font=\tiny]{1}}]]]]
+]
+\end{forest}
 \end{document}
 ```
 
-> **Steps explained:** When a merged (composite) node ties in probability with an original symbol, "high" places it nearer the top of the list so it is merged again sooner — spreading the depths more evenly. "Low" delays it, deepening a few leaves and inflating the variance. The mean length $L$ is unchanged either way.
+> **Steps explained:** When a merged (composite) node ties in probability with an original symbol, the "high" rule keeps the tree balanced, so all four rare symbols sit at depth 4 (lengths $\{2,2,3,3,4,4,4,4\}$, variance 0.66). The "low" rule delays merges, creating one deep tail (lengths $\{2,2,3,3,3,4,5,5\}$, variance 0.86). The mean length $L=2.80$ is unchanged either way.
 
 ---
 

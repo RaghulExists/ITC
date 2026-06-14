@@ -213,7 +213,7 @@ The curve is concave ($\cap$-shaped), symmetric about $P = 0.5$, with **maximum 
     samples=200, domain=0.0001:0.9999,
     grid=both, width=10cm, height=7cm,
     title={Entropy of a binary source}]
-\addplot[blue,thick]{-x*log2(x)-(1-x)*log2(1-x)};
+\addplot[blue,thick]{-x*ln(x)/ln(2)-(1-x)*ln(1-x)/ln(2)};
 \addplot[dashed,red] coordinates {(0.5,0)(0.5,1)};
 \addplot[dashed,red] coordinates {(0,1)(0.5,1)};
 \node[label={[font=\small]above:$(0.5,\,1)$}] at (axis cs:0.5,1){};
@@ -318,13 +318,52 @@ $$H=\sum P_i H_i = 3\times\tfrac13(1.5)=1.5\ \text{bits/symbol}$$
 
 $$G_1=\log_2 3=1.585\ \text{bits/sym}$$
 
-**$G_2$:** pair probability $= P_i\times p_{ij}$. Same-symbol pairs (3 of them): $\tfrac13\cdot\tfrac12=\tfrac16$; different-symbol pairs (6 of them): $\tfrac13\cdot\tfrac14=\tfrac1{12}$.
+**$G_2$ — build the pair-probability tree.** Start from each state ($P_i=\tfrac13$), branch by the transition probabilities (self $\tfrac12$, others $\tfrac14$). Each leaf = a state-pair; its probability $= P_i\times p_{ij}$:
 
-$$H(S^2)=3\cdot\tfrac16\log_2 6+6\cdot\tfrac1{12}\log_2 12=\tfrac12(2.585)+\tfrac12(3.585)=3.085$$
+| Pair | Prob | Pair | Prob | Pair | Prob |
+|------|------|------|------|------|------|
+| 11 | $\tfrac16$ | 12 | $\tfrac1{12}$ | 13 | $\tfrac1{12}$ |
+| 21 | $\tfrac1{12}$ | 22 | $\tfrac16$ | 23 | $\tfrac1{12}$ |
+| 31 | $\tfrac1{12}$ | 32 | $\tfrac1{12}$ | 33 | $\tfrac16$ |
 
-$$G_2=\frac{3.085}{2}=1.5425\ \text{bits/sym}$$
+(3 "same" pairs at $\tfrac16$, 6 "different" pairs at $\tfrac1{12}$; sum $=3\cdot\tfrac16+6\cdot\tfrac1{12}=1$ ✓)
+
+$$H(S^2)=3\Big(\tfrac16\log_2 6\Big)+6\Big(\tfrac1{12}\log_2 12\Big)=\tfrac12(2.585)+\tfrac12(3.585)=3.085$$
+
+$$G_2=\frac{H(S^2)}{2}=\frac{3.085}{2}=1.5425\ \text{bits/sym}$$
 
 **Verification:** $G_1(1.585)\ge G_2(1.5425)\ge H(1.5)$ ✓
+
+**LaTeX (TikZ/forest) — pair-probability tree:**
+
+```latex
+\documentclass{standalone}
+\usepackage{forest}
+\usepackage{amsmath}
+\begin{document}
+\begin{forest}
+for tree={grow'=east, parent anchor=east, child anchor=west,
+          edge={-stealth}, l sep=16mm, s sep=2mm, font=\footnotesize}
+[{Start}
+  [{$1$ $\tfrac13$}, edge label={node[midway,above,font=\tiny]{$\tfrac13$}}
+    [{$11=\tfrac16$},   edge label={node[midway,above,font=\tiny]{$\tfrac12$}}]
+    [{$12=\tfrac1{12}$},edge label={node[midway,above,font=\tiny]{$\tfrac14$}}]
+    [{$13=\tfrac1{12}$},edge label={node[midway,below,font=\tiny]{$\tfrac14$}}]
+  ]
+  [{$2$ $\tfrac13$}, edge label={node[midway,above,font=\tiny]{$\tfrac13$}}
+    [{$21=\tfrac1{12}$},edge label={node[midway,above,font=\tiny]{$\tfrac14$}}]
+    [{$22=\tfrac16$},   edge label={node[midway,above,font=\tiny]{$\tfrac12$}}]
+    [{$23=\tfrac1{12}$},edge label={node[midway,below,font=\tiny]{$\tfrac14$}}]
+  ]
+  [{$3$ $\tfrac13$}, edge label={node[midway,below,font=\tiny]{$\tfrac13$}}
+    [{$31=\tfrac1{12}$},edge label={node[midway,above,font=\tiny]{$\tfrac14$}}]
+    [{$32=\tfrac1{12}$},edge label={node[midway,above,font=\tiny]{$\tfrac14$}}]
+    [{$33=\tfrac16$},   edge label={node[midway,below,font=\tiny]{$\tfrac12$}}]
+  ]
+]
+\end{forest}
+\end{document}
+```
 
 **LaTeX (TikZ) — triangular 3-state diagram:**
 
@@ -428,7 +467,30 @@ $$H_A=\tfrac12\log_2 2+\tfrac14\log_2 4+\tfrac14\log_2 4=1.5 \qquad H_B=1 \qquad
 
 $$H=\tfrac12(1.5)+\tfrac14(1)+\tfrac14(1)=1.25\ \text{bits/symbol}$$
 
-*(The TikZ diagram is structurally identical to Q12 — just relabel S→A, L→B, R→C.)*
+**LaTeX (TikZ) — state diagram (A = abroad, B = MBA/Civil, C = Industry):**
+
+```latex
+\documentclass{standalone}
+\usepackage{tikz}
+\usepackage{amsmath}
+\usetikzlibrary{automata,positioning,arrows.meta}
+\begin{document}
+\begin{tikzpicture}[->,>=Stealth,auto,node distance=3.2cm,
+   every state/.style={thick,minimum size=1cm}]
+  \node[state] (A) {A};
+  \node[state] (B) [left=of A] {B};
+  \node[state] (C) [right=of A] {C};
+  \path
+   (A) edge[loop above] node{$\tfrac12$} (A)
+   (B) edge[loop left]  node{$\tfrac12$} (B)
+   (C) edge[loop right] node{$\tfrac12$} (C)
+   (A) edge[bend right=12] node[below]{$\tfrac14$} (B)
+   (B) edge[bend right=12] node[above]{$\tfrac12$} (A)
+   (A) edge[bend left=12]  node[below]{$\tfrac14$} (C)
+   (C) edge[bend left=12]  node[above]{$\tfrac12$} (A);
+\end{tikzpicture}
+\end{document}
+```
 
 > **Steps explained:** Same source structure as Q12. Build transitions from the (a)–(d) data, solve balance equations, compute $H_i$ and $H$.
 
@@ -450,13 +512,89 @@ $$H_1=\tfrac23\log_2\tfrac32+\tfrac13\log_2 3=0.9183 \qquad H_2=\tfrac14\log_2 4
 
 $$H=\tfrac37(0.9183)+\tfrac47(0.8113)=0.8572\ \text{bits/sym}$$
 
-**$G_1$:** first-symbol probs $P(X)=\tfrac27,\ P(Y)=\tfrac37,\ P(Z)=\tfrac27$
+### Building $G_N$ — the probability tree
 
-$$G_1=\tfrac27\log_2\tfrac72+\tfrac37\log_2\tfrac73+\tfrac27\log_2\tfrac72=1.557$$
+Start from the stationary state probabilities $P(1)=\tfrac37,\ P(2)=\tfrac47$. At each step, a branch **multiplies by its transition probability** and **emits the symbol** on that transition. Reading every root→leaf path gives a symbol sequence and its probability. The cumulative probability is shown at each node.
 
-**$G_2$:** $H(S^2)=2.6174 \Rightarrow G_2=1.3087$
+**LaTeX (TikZ/forest) — probability tree (3 levels):**
 
-**$G_3$:** $H(S^3)=3.533 \Rightarrow G_3=1.178$
+```latex
+\documentclass{standalone}
+\usepackage{forest}
+\usepackage{amsmath}
+\begin{document}
+\begin{forest}
+for tree={grow'=east, parent anchor=east, child anchor=west,
+          edge={-stealth}, l sep=20mm, s sep=1.5mm, font=\footnotesize}
+[{Start}
+  [{$1$ $\tfrac{3}{7}$}, edge label={node[midway,above,font=\tiny]{$\tfrac37$}}
+    [{$X{:}1$ $\tfrac{2}{7}$}, edge label={node[midway,above,font=\tiny]{$X\,\tfrac23$}}
+      [{$X{:}1$ $\tfrac{4}{21}$}, edge label={node[midway,above,font=\tiny]{$X\,\tfrac23$}}
+        [{$XXX=\tfrac{8}{63}$},  edge label={node[midway,above,font=\tiny]{$X\,\tfrac23$}}]
+        [{$XXZ=\tfrac{4}{63}$},  edge label={node[midway,below,font=\tiny]{$Z\,\tfrac13$}}]]
+      [{$Z{:}2$ $\tfrac{2}{21}$}, edge label={node[midway,below,font=\tiny]{$Z\,\tfrac13$}}
+        [{$XZZ=\tfrac{1}{42}$},  edge label={node[midway,above,font=\tiny]{$Z\,\tfrac14$}}]
+        [{$XZY=\tfrac{1}{14}$},  edge label={node[midway,below,font=\tiny]{$Y\,\tfrac34$}}]]]
+    [{$Z{:}2$ $\tfrac{1}{7}$}, edge label={node[midway,below,font=\tiny]{$Z\,\tfrac13$}}
+      [{$Z{:}1$ $\tfrac{1}{28}$}, edge label={node[midway,above,font=\tiny]{$Z\,\tfrac14$}}
+        [{$ZZX=\tfrac{1}{42}$},  edge label={node[midway,above,font=\tiny]{$X\,\tfrac23$}}]
+        [{$ZZZ=\tfrac{1}{84}$},  edge label={node[midway,below,font=\tiny]{$Z\,\tfrac13$}}]]
+      [{$Y{:}2$ $\tfrac{3}{28}$}, edge label={node[midway,below,font=\tiny]{$Y\,\tfrac34$}}
+        [{$ZYZ=\tfrac{3}{112}$}, edge label={node[midway,above,font=\tiny]{$Z\,\tfrac14$}}]
+        [{$ZYY=\tfrac{9}{112}$}, edge label={node[midway,below,font=\tiny]{$Y\,\tfrac34$}}]]]]
+  [{$2$ $\tfrac{4}{7}$}, edge label={node[midway,below,font=\tiny]{$\tfrac47$}}
+    [{$Z{:}1$ $\tfrac{1}{7}$}, edge label={node[midway,above,font=\tiny]{$Z\,\tfrac14$}}
+      [{$X{:}1$ $\tfrac{2}{21}$}, edge label={node[midway,above,font=\tiny]{$X\,\tfrac23$}}
+        [{$ZXX=\tfrac{4}{63}$},  edge label={node[midway,above,font=\tiny]{$X\,\tfrac23$}}]
+        [{$ZXZ=\tfrac{2}{63}$},  edge label={node[midway,below,font=\tiny]{$Z\,\tfrac13$}}]]
+      [{$Z{:}2$ $\tfrac{1}{21}$}, edge label={node[midway,below,font=\tiny]{$Z\,\tfrac13$}}
+        [{$ZZZ=\tfrac{1}{84}$},  edge label={node[midway,above,font=\tiny]{$Z\,\tfrac14$}}]
+        [{$ZZY=\tfrac{1}{28}$},  edge label={node[midway,below,font=\tiny]{$Y\,\tfrac34$}}]]]
+    [{$Y{:}2$ $\tfrac{3}{7}$}, edge label={node[midway,below,font=\tiny]{$Y\,\tfrac34$}}
+      [{$Z{:}1$ $\tfrac{3}{28}$}, edge label={node[midway,above,font=\tiny]{$Z\,\tfrac14$}}
+        [{$YZX=\tfrac{1}{14}$},  edge label={node[midway,above,font=\tiny]{$X\,\tfrac23$}}]
+        [{$YZZ=\tfrac{1}{28}$},  edge label={node[midway,below,font=\tiny]{$Z\,\tfrac13$}}]]
+      [{$Y{:}2$ $\tfrac{9}{28}$}, edge label={node[midway,below,font=\tiny]{$Y\,\tfrac34$}}
+        [{$YYZ=\tfrac{9}{112}$}, edge label={node[midway,above,font=\tiny]{$Z\,\tfrac14$}}]
+        [{$YYY=\tfrac{27}{112}$},edge label={node[midway,below,font=\tiny]{$Y\,\tfrac34$}}]]]]
+]
+\end{forest}
+\end{document}
+```
+
+**$G_1$ — first-order symbols** (the symbol at the *first* step):
+
+| Symbol | How it arises | Probability |
+|--------|---------------|-------------|
+| X | $P(1)\cdot\tfrac23$ | $\tfrac37\cdot\tfrac23=\tfrac27$ |
+| Y | $P(2)\cdot\tfrac34$ | $\tfrac47\cdot\tfrac34=\tfrac37$ |
+| Z | $P(1)\cdot\tfrac13+P(2)\cdot\tfrac14$ | $\tfrac17+\tfrac17=\tfrac27$ |
+
+$$G_1=H(\bar S)=\tfrac27\log_2\tfrac72+\tfrac37\log_2\tfrac73+\tfrac27\log_2\tfrac72=\mathbf{1.557\ bits/sym}$$
+
+**$G_2$ — second-order** (depth-2 nodes; $ZZ$ appears from both roots and merges: $\tfrac1{28}+\tfrac1{21}=\tfrac1{12}$):
+
+| Seq | Prob | Seq | Prob | Seq | Prob |
+|-----|------|-----|------|-----|------|
+| XX | $\tfrac{4}{21}$ | XZ | $\tfrac{2}{21}$ | ZX | $\tfrac{2}{21}$ |
+| ZY | $\tfrac{3}{28}$ | YZ | $\tfrac{3}{28}$ | YY | $\tfrac{9}{28}$ |
+| ZZ | $\tfrac{1}{12}$ |  |  |  |  |
+
+$$H(S^2)=\tfrac{4}{21}\log_2\tfrac{21}{4}+2\Big(\tfrac{2}{21}\log_2\tfrac{21}{2}\Big)+2\Big(\tfrac{3}{28}\log_2\tfrac{28}{3}\Big)+\tfrac{9}{28}\log_2\tfrac{28}{9}+\tfrac{1}{12}\log_2 12$$
+$$= 0.4557+0.6461+0.6905+0.5263+0.2988 = 2.6174 \;\Rightarrow\; G_2=\frac{2.6174}{2}=\mathbf{1.3087}$$
+
+**$G_3$ — third-order** (the 15 leaves; $ZZZ$ merges: $\tfrac1{84}+\tfrac1{84}=\tfrac1{42}$):
+
+| Seq | Prob | Seq | Prob | Seq | Prob |
+|-----|------|-----|------|-----|------|
+| XXX | $\tfrac{8}{63}$ | XXZ | $\tfrac{4}{63}$ | ZXX | $\tfrac{4}{63}$ |
+| ZXZ | $\tfrac{2}{63}$ | XZZ | $\tfrac{1}{42}$ | ZZX | $\tfrac{1}{42}$ |
+| ZZZ | $\tfrac{1}{42}$ | XZY | $\tfrac{1}{14}$ | YZX | $\tfrac{1}{14}$ |
+| ZYZ | $\tfrac{3}{112}$ | ZYY | $\tfrac{9}{112}$ | YYZ | $\tfrac{9}{112}$ |
+| ZZY | $\tfrac{1}{28}$ | YZZ | $\tfrac{1}{28}$ | YYY | $\tfrac{27}{112}$ |
+
+$$H(S^3)=0.3781+2(0.2525)+0.1580+3(0.1284)+2(0.2720)+0.1399+2(0.2923)+2(0.1717)+0.4948 = 3.533$$
+$$G_3=\frac{3.533}{3}=\mathbf{1.178}$$
 
 **Verification:** $G_1(1.557)>G_2(1.309)>G_3(1.178)>H(0.857)$ ✓
 
@@ -562,15 +700,52 @@ $$H=0.4286(1.371)+0.3214(1.486)+0.25(1.571)=1.458\ \text{bits/sym}$$
 
 **(iii) $G_1, G_2$ with initial $P(1)=P(2)=P(3)=\tfrac13$:**
 
-First-symbol probabilities (sum of $\tfrac13 \times$ outgoing to each symbol):
+**$G_1$ — first-symbol probabilities** (each $=\tfrac13\times$ column sum of the transition matrix):
 
-$$P(A)=0.4 \quad P(B)=0.333 \quad P(C)=0.267$$
+$$P(A)=\tfrac13(0.6+0.3+0.3)=0.4 \quad P(B)=\tfrac13(0.2+0.5+0.3)=0.333 \quad P(C)=\tfrac13(0.2+0.2+0.4)=0.267$$
 
-$$G_1=0.4\log_2\tfrac1{0.4}+0.333\log_2\tfrac1{0.333}+0.267\log_2\tfrac1{0.267}=1.566$$
+$$G_1=0.4\log_2\tfrac1{0.4}+0.333\log_2\tfrac1{0.333}+0.267\log_2\tfrac1{0.267}=0.5288+0.5283+0.5086=\mathbf{1.566}$$
 
-Pair probs $=\tfrac13 p_{ij}$; computing $H(S^2)=3.061 \Rightarrow G_2=\dfrac{3.061}{2}=1.531$
+**$G_2$ — pair-probability tree.** Each pair probability $=\tfrac13\,p_{ij}$ (initial state uniform):
+
+| Pair | Prob | Pair | Prob | Pair | Prob |
+|------|------|------|------|------|------|
+| AA | 0.2000 | AB | 0.0667 | AC | 0.0667 |
+| BA | 0.1000 | BB | 0.1667 | BC | 0.0667 |
+| CA | 0.1000 | CB | 0.1000 | CC | 0.1333 |
+
+$$H(S^2)=0.2\log_2\tfrac1{0.2}+3\Big(0.0667\log_2\tfrac1{0.0667}\Big)+3\Big(0.1\log_2\tfrac1{0.1}\Big)+0.1667\log_2\tfrac1{0.1667}+0.1333\log_2\tfrac1{0.1333}$$
+$$= 0.4644+0.7814+0.9966+0.4308+0.3876 = 3.061 \;\Rightarrow\; G_2=\frac{3.061}{2}=\mathbf{1.531}$$
 
 **Verification:** $G_1(1.566)\ge G_2(1.531)\ge H(1.458)$ ✓
+
+**LaTeX (TikZ/forest) — pair-probability tree:**
+
+```latex
+\documentclass{standalone}
+\usepackage{forest}
+\usepackage{amsmath}
+\begin{document}
+\begin{forest}
+for tree={grow'=east, parent anchor=east, child anchor=west,
+          edge={-stealth}, l sep=16mm, s sep=2mm, font=\footnotesize}
+[{Start}
+  [{$A$ $\tfrac13$}, edge label={node[midway,above,font=\tiny]{$\tfrac13$}}
+    [{$AA=0.200$}, edge label={node[midway,above,font=\tiny]{$0.6$}}]
+    [{$AB=0.067$}, edge label={node[midway,above,font=\tiny]{$0.2$}}]
+    [{$AC=0.067$}, edge label={node[midway,below,font=\tiny]{$0.2$}}]]
+  [{$B$ $\tfrac13$}, edge label={node[midway,above,font=\tiny]{$\tfrac13$}}
+    [{$BA=0.100$}, edge label={node[midway,above,font=\tiny]{$0.3$}}]
+    [{$BB=0.167$}, edge label={node[midway,above,font=\tiny]{$0.5$}}]
+    [{$BC=0.067$}, edge label={node[midway,below,font=\tiny]{$0.2$}}]]
+  [{$C$ $\tfrac13$}, edge label={node[midway,below,font=\tiny]{$\tfrac13$}}
+    [{$CA=0.100$}, edge label={node[midway,above,font=\tiny]{$0.3$}}]
+    [{$CB=0.100$}, edge label={node[midway,above,font=\tiny]{$0.3$}}]
+    [{$CC=0.133$}, edge label={node[midway,below,font=\tiny]{$0.4$}}]]
+]
+\end{forest}
+\end{document}
+```
 
 **LaTeX (TikZ) — triangular, asymmetric:**
 
@@ -614,19 +789,82 @@ $$H_1=\tfrac34\log_2\tfrac43+\tfrac14\log_2 4=0.311+0.5=0.811=H_2$$
 
 $$H=\tfrac12(0.811)+\tfrac12(0.811)=0.811\ \text{bits/sym}$$
 
-**$G_1$:** symbol probs $P(A)=\tfrac38,\ P(B)=\tfrac38,\ P(C)=\tfrac28$
+### Building $G_N$ — the probability tree
 
-$$G_1=2\bigl(\tfrac38\log_2\tfrac83\bigr)+\tfrac14\log_2 4=1.061+0.5=1.561$$
+Start from $P(1)=P(2)=\tfrac12$; each branch multiplies by its transition probability and emits its symbol.
 
-**$G_2$:** 2-symbol sequence probs (from tree): $AA=BB=\tfrac9{32}$, $AC=CB=CA=BC=\tfrac3{32}$, $CC=\tfrac2{32}$.
+**LaTeX (TikZ/forest) — probability tree (3 levels):**
 
-$$H(S^2)=2\bigl(\tfrac9{32}\log_2\tfrac{32}{9}\bigr)+4\bigl(\tfrac3{32}\log_2\tfrac{32}{3}\bigr)+\tfrac2{32}\log_2 16=2.560$$
+```latex
+\documentclass{standalone}
+\usepackage{forest}
+\usepackage{amsmath}
+\begin{document}
+\begin{forest}
+for tree={grow'=east, parent anchor=east, child anchor=west,
+          edge={-stealth}, l sep=20mm, s sep=1.5mm, font=\footnotesize}
+[{Start}
+  [{$1$ $\tfrac12$}, edge label={node[midway,above,font=\tiny]{$\tfrac12$}}
+    [{$A{:}1$ $\tfrac38$}, edge label={node[midway,above,font=\tiny]{$A\,\tfrac34$}}
+      [{$A{:}1$ $\tfrac{9}{32}$}, edge label={node[midway,above,font=\tiny]{$A\,\tfrac34$}}
+        [{$AAA=\tfrac{27}{128}$}, edge label={node[midway,above,font=\tiny]{$A\,\tfrac34$}}]
+        [{$AAC=\tfrac{9}{128}$},  edge label={node[midway,below,font=\tiny]{$C\,\tfrac14$}}]]
+      [{$C{:}2$ $\tfrac{3}{32}$}, edge label={node[midway,below,font=\tiny]{$C\,\tfrac14$}}
+        [{$ACC=\tfrac{3}{128}$},  edge label={node[midway,above,font=\tiny]{$C\,\tfrac14$}}]
+        [{$ACB=\tfrac{9}{128}$},  edge label={node[midway,below,font=\tiny]{$B\,\tfrac34$}}]]]
+    [{$C{:}2$ $\tfrac18$}, edge label={node[midway,below,font=\tiny]{$C\,\tfrac14$}}
+      [{$C{:}1$ $\tfrac{1}{32}$}, edge label={node[midway,above,font=\tiny]{$C\,\tfrac14$}}
+        [{$CCA=\tfrac{3}{128}$},  edge label={node[midway,above,font=\tiny]{$A\,\tfrac34$}}]
+        [{$CCC=\tfrac{1}{128}$},  edge label={node[midway,below,font=\tiny]{$C\,\tfrac14$}}]]
+      [{$B{:}2$ $\tfrac{3}{32}$}, edge label={node[midway,below,font=\tiny]{$B\,\tfrac34$}}
+        [{$CBC=\tfrac{3}{128}$},  edge label={node[midway,above,font=\tiny]{$C\,\tfrac14$}}]
+        [{$CBB=\tfrac{9}{128}$},  edge label={node[midway,below,font=\tiny]{$B\,\tfrac34$}}]]]]
+  [{$2$ $\tfrac12$}, edge label={node[midway,below,font=\tiny]{$\tfrac12$}}
+    [{$C{:}1$ $\tfrac18$}, edge label={node[midway,above,font=\tiny]{$C\,\tfrac14$}}
+      [{$A{:}1$ $\tfrac{3}{32}$}, edge label={node[midway,above,font=\tiny]{$A\,\tfrac34$}}
+        [{$CAA=\tfrac{9}{128}$},  edge label={node[midway,above,font=\tiny]{$A\,\tfrac34$}}]
+        [{$CAC=\tfrac{3}{128}$},  edge label={node[midway,below,font=\tiny]{$C\,\tfrac14$}}]]
+      [{$C{:}2$ $\tfrac{1}{32}$}, edge label={node[midway,below,font=\tiny]{$C\,\tfrac14$}}
+        [{$CCC=\tfrac{1}{128}$},  edge label={node[midway,above,font=\tiny]{$C\,\tfrac14$}}]
+        [{$CCB=\tfrac{3}{128}$},  edge label={node[midway,below,font=\tiny]{$B\,\tfrac34$}}]]]
+    [{$B{:}2$ $\tfrac38$}, edge label={node[midway,below,font=\tiny]{$B\,\tfrac34$}}
+      [{$C{:}1$ $\tfrac{3}{32}$}, edge label={node[midway,above,font=\tiny]{$C\,\tfrac14$}}
+        [{$BCA=\tfrac{9}{128}$},  edge label={node[midway,above,font=\tiny]{$A\,\tfrac34$}}]
+        [{$BCC=\tfrac{3}{128}$},  edge label={node[midway,below,font=\tiny]{$C\,\tfrac14$}}]]
+      [{$B{:}2$ $\tfrac{9}{32}$}, edge label={node[midway,below,font=\tiny]{$B\,\tfrac34$}}
+        [{$BBC=\tfrac{9}{128}$},  edge label={node[midway,above,font=\tiny]{$C\,\tfrac14$}}]
+        [{$BBB=\tfrac{27}{128}$}, edge label={node[midway,below,font=\tiny]{$B\,\tfrac34$}}]]]]
+]
+\end{forest}
+\end{document}
+```
 
-$$G_2=\frac{2.560}{2}=1.280$$
+**$G_1$ — first-order symbols:** $P(A)=P(1)\cdot\tfrac34=\tfrac38$, $P(B)=P(2)\cdot\tfrac34=\tfrac38$, $P(C)=P(1)\cdot\tfrac14+P(2)\cdot\tfrac14=\tfrac14$.
 
-**$G_3$:** 3-symbol sequence probs: $\tfrac{27}{128}$ (×2), $\tfrac9{128}$ (×6), $\tfrac3{128}$ (×6), $\tfrac2{128}$ (×1).
+$$G_1=2\Big(\tfrac38\log_2\tfrac83\Big)+\tfrac14\log_2 4=1.061+0.5=\mathbf{1.561}$$
 
-$$H(S^3)=3.418\Rightarrow G_3=\frac{3.418}{3}=1.139$$
+**$G_2$ — second-order** (depth-2 nodes; $CC$ merges: $\tfrac1{32}+\tfrac1{32}=\tfrac2{32}$):
+
+| Seq | Prob | Seq | Prob | Seq | Prob |
+|-----|------|-----|------|-----|------|
+| AA | $\tfrac{9}{32}$ | BB | $\tfrac{9}{32}$ | AC | $\tfrac{3}{32}$ |
+| CB | $\tfrac{3}{32}$ | CA | $\tfrac{3}{32}$ | BC | $\tfrac{3}{32}$ |
+| CC | $\tfrac{2}{32}$ |  |  |  |  |
+
+$$H(S^2)=2\Big(\tfrac9{32}\log_2\tfrac{32}{9}\Big)+4\Big(\tfrac3{32}\log_2\tfrac{32}{3}\Big)+\tfrac2{32}\log_2 16 = 1.0294+1.2806+0.25 = 2.560$$
+$$G_2=\frac{2.560}{2}=\mathbf{1.280}$$
+
+**$G_3$ — third-order** (the 15 leaves; $CCC$ merges: $\tfrac1{128}+\tfrac1{128}=\tfrac2{128}$):
+
+| Prob | Sequences | Count |
+|------|-----------|-------|
+| $\tfrac{27}{128}$ | AAA, BBB | 2 |
+| $\tfrac{9}{128}$ | AAC, ACB, CBB, CAA, BCA, BBC | 6 |
+| $\tfrac{3}{128}$ | ACC, CCA, CBC, CAC, CCB, BCC | 6 |
+| $\tfrac{2}{128}$ | CCC | 1 |
+
+$$H(S^3)=2\Big(\tfrac{27}{128}\log_2\tfrac{128}{27}\Big)+6\Big(\tfrac{9}{128}\log_2\tfrac{128}{9}\Big)+6\Big(\tfrac{3}{128}\log_2\tfrac{128}{3}\Big)+\tfrac{2}{128}\log_2 64$$
+$$= 0.9471+1.6158+0.7615+0.0938 = 3.418 \;\Rightarrow\; G_3=\frac{3.418}{3}=\mathbf{1.139}$$
 
 **Verification:** $G_1(1.561)>G_2(1.280)>G_3(1.139)>H(0.811)$ ✓
 
@@ -760,15 +998,92 @@ $$H_2=\tfrac35\log_2\tfrac53+\tfrac25\log_2\tfrac52=0.442+0.529=0.971$$
 
 $$H=0.783(0.650)+0.217(0.971)=0.509+0.211=0.720\ \text{bits/sym}$$
 
-**$G_1$:** symbol probs $P(X)=\tfrac{15}{23}=0.652,\ P(Z)=\tfrac6{23}=0.261,\ P(Y)=\tfrac2{23}=0.087$
+### Building $G_N$ — the probability tree
 
-$$G_1=0.402+0.506+0.306=1.214$$
+Start from $P(1)=\tfrac{18}{23}=0.783,\ P(2)=\tfrac{5}{23}=0.217$; each branch multiplies by its transition probability and emits its symbol. (Probabilities shown as decimals since the denominators are awkward.)
 
-**$G_2$:** building the 2-symbol tree, $H(S^2)=2.159 \Rightarrow G_2=\dfrac{2.159}{2}=1.080$
+**LaTeX (TikZ/forest) — probability tree (3 levels):**
 
-**$G_3$:** building the 3-symbol tree, $H(S^3)=2.889 \Rightarrow G_3=\dfrac{2.889}{3}=0.963$
+```latex
+\documentclass{standalone}
+\usepackage{forest}
+\usepackage{amsmath}
+\begin{document}
+\begin{forest}
+for tree={grow'=east, parent anchor=east, child anchor=west,
+          edge={-stealth}, l sep=20mm, s sep=1.5mm, font=\footnotesize}
+[{Start}
+  [{$1$ $0.783$}, edge label={node[midway,above,font=\tiny]{$0.783$}}
+    [{$X{:}1$ $0.652$}, edge label={node[midway,above,font=\tiny]{$X\,\tfrac56$}}
+      [{$X{:}1$ $0.5435$}, edge label={node[midway,above,font=\tiny]{$X\,\tfrac56$}}
+        [{$XXX=0.4529$}, edge label={node[midway,above,font=\tiny]{$X\,\tfrac56$}}]
+        [{$XXZ=0.0906$}, edge label={node[midway,below,font=\tiny]{$Z\,\tfrac16$}}]]
+      [{$Z{:}2$ $0.1087$}, edge label={node[midway,below,font=\tiny]{$Z\,\tfrac16$}}
+        [{$XZZ=0.0652$}, edge label={node[midway,above,font=\tiny]{$Z\,\tfrac35$}}]
+        [{$XZY=0.0435$}, edge label={node[midway,below,font=\tiny]{$Y\,\tfrac25$}}]]]
+    [{$Z{:}2$ $0.1304$}, edge label={node[midway,below,font=\tiny]{$Z\,\tfrac16$}}
+      [{$Z{:}1$ $0.0783$}, edge label={node[midway,above,font=\tiny]{$Z\,\tfrac35$}}
+        [{$ZZX=0.0652$}, edge label={node[midway,above,font=\tiny]{$X\,\tfrac56$}}]
+        [{$ZZZ=0.0130$}, edge label={node[midway,below,font=\tiny]{$Z\,\tfrac16$}}]]
+      [{$Y{:}2$ $0.0522$}, edge label={node[midway,below,font=\tiny]{$Y\,\tfrac25$}}
+        [{$ZYZ=0.0313$}, edge label={node[midway,above,font=\tiny]{$Z\,\tfrac35$}}]
+        [{$ZYY=0.0209$}, edge label={node[midway,below,font=\tiny]{$Y\,\tfrac25$}}]]]]
+  [{$2$ $0.217$}, edge label={node[midway,below,font=\tiny]{$0.217$}}
+    [{$Z{:}1$ $0.1304$}, edge label={node[midway,above,font=\tiny]{$Z\,\tfrac35$}}
+      [{$X{:}1$ $0.1087$}, edge label={node[midway,above,font=\tiny]{$X\,\tfrac56$}}
+        [{$ZXX=0.0906$}, edge label={node[midway,above,font=\tiny]{$X\,\tfrac56$}}]
+        [{$ZXZ=0.0181$}, edge label={node[midway,below,font=\tiny]{$Z\,\tfrac16$}}]]
+      [{$Z{:}2$ $0.0217$}, edge label={node[midway,below,font=\tiny]{$Z\,\tfrac16$}}
+        [{$ZZZ=0.0130$}, edge label={node[midway,above,font=\tiny]{$Z\,\tfrac35$}}]
+        [{$ZZY=0.0087$}, edge label={node[midway,below,font=\tiny]{$Y\,\tfrac25$}}]]]
+    [{$Y{:}2$ $0.0870$}, edge label={node[midway,below,font=\tiny]{$Y\,\tfrac25$}}
+      [{$Z{:}1$ $0.0522$}, edge label={node[midway,above,font=\tiny]{$Z\,\tfrac35$}}
+        [{$YZX=0.0435$}, edge label={node[midway,above,font=\tiny]{$X\,\tfrac56$}}]
+        [{$YZZ=0.0087$}, edge label={node[midway,below,font=\tiny]{$Z\,\tfrac16$}}]]
+      [{$Y{:}2$ $0.0348$}, edge label={node[midway,below,font=\tiny]{$Y\,\tfrac25$}}
+        [{$YYZ=0.0209$}, edge label={node[midway,above,font=\tiny]{$Z\,\tfrac35$}}]
+        [{$YYY=0.0139$}, edge label={node[midway,below,font=\tiny]{$Y\,\tfrac25$}}]]]]
+]
+\end{forest}
+\end{document}
+```
 
-**Verification:** $G_1(1.214)>G_2(1.080)>G_3(0.963)>H(0.720)$ ✓
+**$G_1$ — first-order symbols:**
+
+| Symbol | How it arises | Probability |
+|--------|---------------|-------------|
+| X | $P(1)\cdot\tfrac56$ | $\tfrac{18}{23}\cdot\tfrac56=\tfrac{15}{23}=0.652$ |
+| Y | $P(2)\cdot\tfrac25$ | $\tfrac{5}{23}\cdot\tfrac25=\tfrac{2}{23}=0.087$ |
+| Z | $P(1)\cdot\tfrac16+P(2)\cdot\tfrac35$ | $\tfrac{3}{23}+\tfrac{3}{23}=\tfrac{6}{23}=0.261$ |
+
+$$G_1=0.652\log_2\tfrac1{0.652}+0.261\log_2\tfrac1{0.261}+0.087\log_2\tfrac1{0.087}=0.402+0.506+0.306=\mathbf{1.214}$$
+
+**$G_2$ — second-order** (depth-2 nodes; $ZZ$ merges: $0.0783+0.0217=0.1$):
+
+| Seq | Prob | Seq | Prob | Seq | Prob |
+|-----|------|-----|------|-----|------|
+| XX | 0.5435 | XZ | 0.1087 | ZX | 0.1087 |
+| ZY | 0.0522 | YZ | 0.0522 | YY | 0.0348 |
+| ZZ | 0.1000 |  |  |  |  |
+
+$$H(S^2)=0.4781+0.3480+0.3480+0.2223+0.2223+0.1686+0.3322 = 2.119$$
+$$G_2=\frac{2.119}{2}=\mathbf{1.060}$$
+
+> ⚠️ *(Correction: an earlier draft listed $G_2=1.080$ — the correct value is $\mathbf{1.060}$, from $H(S^2)=2.119$.)*
+
+**$G_3$ — third-order** (the 15 leaves; $ZZZ$ merges: $0.0130+0.0130=0.0261$):
+
+| Seq | Prob | Seq | Prob | Seq | Prob |
+|-----|------|-----|------|-----|------|
+| XXX | 0.4529 | XXZ | 0.0906 | ZXX | 0.0906 |
+| XZZ | 0.0652 | ZZX | 0.0652 | XZY | 0.0435 |
+| YZX | 0.0435 | ZYZ | 0.0313 | ZZZ | 0.0261 |
+| ZYY | 0.0209 | YYZ | 0.0209 | ZXZ | 0.0181 |
+| YYY | 0.0139 | ZZY | 0.0087 | YZZ | 0.0087 |
+
+$$H(S^3)=2.889 \;\Rightarrow\; G_3=\frac{2.889}{3}=\mathbf{0.963}$$
+
+**Verification:** $G_1(1.214)>G_2(1.060)>G_3(0.963)>H(0.720)$ ✓
 
 **LaTeX (TikZ):**
 
@@ -915,7 +1230,7 @@ $$G_N=\frac{1}{N}\,H(S^N)=\frac{1}{N}\sum_{\text{all }N\text{-seq}}P(\text{seq})
 | 17 | $H=0.811$, $G_1=1.561$, $G_2=1.280$, $G_3=1.139$ |
 | 18 | $P(A)=P(B)=\tfrac12$; $H=0.918$ |
 | 19 | $P=\tfrac{5}{14},\tfrac17,\tfrac17,\tfrac{5}{14}$; $H=0.801$ |
-| 20 | $P(1)=\tfrac{18}{23}$, $P(2)=\tfrac{5}{23}$; $H=0.720$, $G_1=1.214$, $G_2=1.080$, $G_3=0.963$ |
+| 20 | $P(1)=\tfrac{18}{23}$, $P(2)=\tfrac{5}{23}$; $H=0.720$, $G_1=1.214$, $G_2=1.060$, $G_3=0.963$ |
 
 ---
 

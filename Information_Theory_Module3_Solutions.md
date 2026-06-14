@@ -437,6 +437,33 @@ $$C = \log_2\!\Big[\sum_{j=1}^{n} 2^{\,Q_j}\Big]\ \text{bits/symbol}$$
 
 $$P(Y/X) = \begin{bmatrix} 0.8 & 0.2 & 0\\ 0.1 & 0.8 & 0.1\\ 0 & 0.2 & 0.8 \end{bmatrix}$$
 
+**LaTeX (TikZ) — channel diagram:**
+
+```latex
+\documentclass{standalone}
+\usepackage{tikz}
+\usepackage{amsmath}
+\usetikzlibrary{arrows.meta,positioning}
+\begin{document}
+\begin{tikzpicture}[>=Stealth,node distance=1.8cm and 4.5cm,
+   every node/.style={font=\small}]
+  \node (x1) {$x_1$};
+  \node (x2) [below=of x1] {$x_2$};
+  \node (x3) [below=of x2] {$x_3$};
+  \node (y1) [right=of x1] {$y_1$};
+  \node (y2) [right=of x2] {$y_2$};
+  \node (y3) [right=of x3] {$y_3$};
+  \draw[->] (x1) -- node[above]{$0.8$} (y1);
+  \draw[->] (x1) -- node[pos=.3,above]{$0.2$} (y2);
+  \draw[->] (x2) -- node[pos=.3,above,sloped]{$0.1$} (y1);
+  \draw[->] (x2) -- node[above]{$0.8$} (y2);
+  \draw[->] (x2) -- node[pos=.3,below,sloped]{$0.1$} (y3);
+  \draw[->] (x3) -- node[pos=.3,below,sloped]{$0.2$} (y2);
+  \draw[->] (x3) -- node[below]{$0.8$} (y3);
+\end{tikzpicture}
+\end{document}
+```
+
 **Step 1 — Right-hand side $r_i = \sum_j P_{ij}\log_2 P_{ij}$:**
 
 $$r_1 = 0.8\log_2 0.8 + 0.2\log_2 0.2 = -0.7219$$
@@ -465,6 +492,28 @@ $$\boxed{C = 0.827\ \text{bits/symbol}}$$
 ## Q13 — BSC capacity by Muroga + verify
 
 $$P(Y/X) = \begin{bmatrix} 3/4 & 1/4\\ 1/4 & 3/4 \end{bmatrix}$$
+
+**LaTeX (TikZ) — BSC channel diagram:**
+
+```latex
+\documentclass{standalone}
+\usepackage{tikz}
+\usepackage{amsmath}
+\usetikzlibrary{arrows.meta,positioning}
+\begin{document}
+\begin{tikzpicture}[>=Stealth,node distance=2.2cm and 4cm,
+   every node/.style={font=\small}]
+  \node (x1) {$x_1$};
+  \node (x2) [below=of x1] {$x_2$};
+  \node (y1) [right=of x1] {$y_1$};
+  \node (y2) [below=of y1] {$y_2$};
+  \draw[->] (x1) -- node[above]{$3/4$} (y1);
+  \draw[->] (x1) -- node[pos=.3,above,sloped]{$1/4$} (y2);
+  \draw[->] (x2) -- node[pos=.3,below,sloped]{$1/4$} (y1);
+  \draw[->] (x2) -- node[below]{$3/4$} (y2);
+\end{tikzpicture}
+\end{document}
+```
 
 **Step 1 — RHS:**
 $$r_1 = 0.75\log_2 0.75 + 0.25\log_2 0.25 = -0.8113 = r_2$$
