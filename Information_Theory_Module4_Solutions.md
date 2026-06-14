@@ -151,7 +151,15 @@ So the encoder is just the $k$ message lines plus $(n-k)$ XOR (mod-2 adder) tree
 
 Use the standard $(6,3)$ code with parity matrix
 
+![matrix](https://latex.codecogs.com/png.image?%5Cdpi%7B130%7D%5Cbg%7Bwhite%7DP%3D%5Cbegin%7Bbmatrix%7D%201%20%26%200%20%26%201%20%5C%5C%200%20%26%201%20%26%201%20%5C%5C%201%20%26%201%20%26%200%20%5Cend%7Bbmatrix%7D)
+
+<details><summary>LaTeX source (for Overleaf)</summary>
+
+```
 $$P=\begin{bmatrix} 1 & 0 & 1 \\ 0 & 1 & 1 \\ 1 & 1 & 0 \end{bmatrix}$$
+```
+
+</details>
 
 so that $G=[I_3\mid P]$ gives the check bits
 
@@ -211,15 +219,39 @@ $$S_1 = r_1+r_3+r_4,\qquad S_2 = r_2+r_3+r_5,\qquad S_3 = r_1+r_2+r_6 .$$
 
 **Step 1 — Parity matrix $P$ (rows = $d_1..d_4$, columns = $C_5..C_8$).** Read each check equation as a column:
 
+![matrix](https://latex.codecogs.com/png.image?%5Cdpi%7B130%7D%5Cbg%7Bwhite%7DP%3D%5Cbegin%7Bbmatrix%7D%200%20%26%201%20%26%200%20%26%201%20%5C%5C%201%20%26%201%20%26%201%20%26%200%20%5C%5C%201%20%26%200%20%26%201%20%26%201%20%5C%5C%201%20%26%201%20%26%201%20%26%201%20%5Cend%7Bbmatrix%7D)
+
+<details><summary>LaTeX source (for Overleaf)</summary>
+
+```
 $$P=\begin{bmatrix} 0 & 1 & 0 & 1 \\ 1 & 1 & 1 & 0 \\ 1 & 0 & 1 & 1 \\ 1 & 1 & 1 & 1 \end{bmatrix}$$
+```
+
+</details>
 
 **Step 2 — Generator matrix $G=[I_4\mid P]$:**
 
+![matrix](https://latex.codecogs.com/png.image?%5Cdpi%7B130%7D%5Cbg%7Bwhite%7DG%3D%5Cbegin%7Bbmatrix%7D%201%20%26%200%20%26%200%20%26%200%20%26%200%20%26%201%20%26%200%20%26%201%20%5C%5C%200%20%26%201%20%26%200%20%26%200%20%26%201%20%26%201%20%26%201%20%26%200%20%5C%5C%200%20%26%200%20%26%201%20%26%200%20%26%201%20%26%200%20%26%201%20%26%201%20%5C%5C%200%20%26%200%20%26%200%20%26%201%20%26%201%20%26%201%20%26%201%20%26%201%20%5Cend%7Bbmatrix%7D)
+
+<details><summary>LaTeX source (for Overleaf)</summary>
+
+```
 $$G=\begin{bmatrix} 1 & 0 & 0 & 0 & 0 & 1 & 0 & 1 \\ 0 & 1 & 0 & 0 & 1 & 1 & 1 & 0 \\ 0 & 0 & 1 & 0 & 1 & 0 & 1 & 1 \\ 0 & 0 & 0 & 1 & 1 & 1 & 1 & 1 \end{bmatrix}$$
+```
+
+</details>
 
 **Step 3 — Parity-check matrix $H=[P^T\mid I_4]$:**
 
+![matrix](https://latex.codecogs.com/png.image?%5Cdpi%7B130%7D%5Cbg%7Bwhite%7DH%3D%5Cbegin%7Bbmatrix%7D%200%20%26%201%20%26%201%20%26%201%20%26%201%20%26%200%20%26%200%20%26%200%20%5C%5C%201%20%26%201%20%26%200%20%26%201%20%26%200%20%26%201%20%26%200%20%26%200%20%5C%5C%200%20%26%201%20%26%201%20%26%201%20%26%200%20%26%200%20%26%201%20%26%200%20%5C%5C%201%20%26%200%20%26%201%20%26%201%20%26%200%20%26%200%20%26%200%20%26%201%20%5Cend%7Bbmatrix%7D)
+
+<details><summary>LaTeX source (for Overleaf)</summary>
+
+```
 $$H=\begin{bmatrix} 0 & 1 & 1 & 1 & 1 & 0 & 0 & 0 \\ 1 & 1 & 0 & 1 & 0 & 1 & 0 & 0 \\ 0 & 1 & 1 & 1 & 0 & 0 & 1 & 0 \\ 1 & 0 & 1 & 1 & 0 & 0 & 0 & 1 \end{bmatrix}$$
+```
+
+</details>
 
 **Step 4 — Code vectors** $C=[\,d_1\,d_2\,d_3\,d_4\;C_5\,C_6\,C_7\,C_8\,]$:
 
@@ -250,7 +282,15 @@ So this code detects $d_{\min}-1=2$ errors and corrects $\tfrac{d_{\min}-1}{2}=1
 
 **Restate:** A $(6,3)$ code has
 
+![matrix](https://latex.codecogs.com/png.image?%5Cdpi%7B130%7D%5Cbg%7Bwhite%7DG%3D%5Cbegin%7Bbmatrix%7D%201%20%26%200%20%26%200%20%26%201%20%26%200%20%26%201%20%5C%5C%200%20%26%201%20%26%200%20%26%201%20%26%201%20%26%200%20%5C%5C%200%20%26%200%20%26%201%20%26%200%20%26%201%20%26%201%20%5Cend%7Bbmatrix%7D)
+
+<details><summary>LaTeX source (for Overleaf)</summary>
+
+```
 $$G=\begin{bmatrix} 1 & 0 & 0 & 1 & 0 & 1 \\ 0 & 1 & 0 & 1 & 1 & 0 \\ 0 & 0 & 1 & 0 & 1 & 1 \end{bmatrix}$$
+```
+
+</details>
 
 (i) all code vectors, (ii) all Hamming weights and distances, (iii) minimum Hamming distance.
 
@@ -287,11 +327,27 @@ $$\boxed{d_{\min}=W_{t,\min}=3.}$$
 
 **Setup.** $G=[\,I_k\mid P\,]$ and $H=[\,P^T\mid I_{n-k}\,]$, so
 
+![matrix](https://latex.codecogs.com/png.image?%5Cdpi%7B130%7D%5Cbg%7Bwhite%7DH%5ET%3D%5Cbegin%7Bbmatrix%7D%20P%20%5C%5C%20I%5F%7Bn%2Dk%7D%20%5Cend%7Bbmatrix%7D%2E)
+
+<details><summary>LaTeX source (for Overleaf)</summary>
+
+```
 $$H^T=\begin{bmatrix} P \\ I_{n-k} \end{bmatrix}.$$
+```
+
+</details>
 
 **Proof that $GH^T=0$:** multiply the block matrices (mod 2):
 
+![matrix](https://latex.codecogs.com/png.image?%5Cdpi%7B130%7D%5Cbg%7Bwhite%7DGH%5ET%3D%5B%5C%2CI%5Fk%5Cmid%20P%5C%2C%5D%5Cbegin%7Bbmatrix%7D%20P%20%5C%5C%20I%5F%7Bn%2Dk%7D%20%5Cend%7Bbmatrix%7D%3DI%5Fk%5C%2CP%20%5C%3B%2B%5C%3B%20P%5C%2CI%5F%7Bn%2Dk%7D%3DP%2BP%3D0%20%2E)
+
+<details><summary>LaTeX source (for Overleaf)</summary>
+
+```
 $$GH^T=[\,I_k\mid P\,]\begin{bmatrix} P \\ I_{n-k} \end{bmatrix}=I_k\,P \;+\; P\,I_{n-k}=P+P=0 .$$
+```
+
+</details>
 
 (In mod-2 arithmetic any matrix added to itself is $0$.)
 
@@ -315,15 +371,39 @@ $$C_5=d_1+d_3+d_4,\quad C_6=d_1+d_2+d_3,\quad C_7=d_2+d_3+d_4 .$$
 
 **Step 1 — Parity matrix** (rows $d_1..d_4$, columns $C_5,C_6,C_7$):
 
+![matrix](https://latex.codecogs.com/png.image?%5Cdpi%7B130%7D%5Cbg%7Bwhite%7DP%3D%5Cbegin%7Bbmatrix%7D%201%20%26%201%20%26%200%20%5C%5C%200%20%26%201%20%26%201%20%5C%5C%201%20%26%201%20%26%201%20%5C%5C%201%20%26%200%20%26%201%20%5Cend%7Bbmatrix%7D)
+
+<details><summary>LaTeX source (for Overleaf)</summary>
+
+```
 $$P=\begin{bmatrix} 1 & 1 & 0 \\ 0 & 1 & 1 \\ 1 & 1 & 1 \\ 1 & 0 & 1 \end{bmatrix}$$
+```
+
+</details>
 
 **Step 2 — Generator matrix $G=[I_4\mid P]$:**
 
+![matrix](https://latex.codecogs.com/png.image?%5Cdpi%7B130%7D%5Cbg%7Bwhite%7DG%3D%5Cbegin%7Bbmatrix%7D%201%20%26%200%20%26%200%20%26%200%20%26%201%20%26%201%20%26%200%20%5C%5C%200%20%26%201%20%26%200%20%26%200%20%26%200%20%26%201%20%26%201%20%5C%5C%200%20%26%200%20%26%201%20%26%200%20%26%201%20%26%201%20%26%201%20%5C%5C%200%20%26%200%20%26%200%20%26%201%20%26%201%20%26%200%20%26%201%20%5Cend%7Bbmatrix%7D)
+
+<details><summary>LaTeX source (for Overleaf)</summary>
+
+```
 $$G=\begin{bmatrix} 1 & 0 & 0 & 0 & 1 & 1 & 0 \\ 0 & 1 & 0 & 0 & 0 & 1 & 1 \\ 0 & 0 & 1 & 0 & 1 & 1 & 1 \\ 0 & 0 & 0 & 1 & 1 & 0 & 1 \end{bmatrix}$$
+```
+
+</details>
 
 **Step 3 — Parity-check matrix $H=[P^T\mid I_3]$:**
 
+![matrix](https://latex.codecogs.com/png.image?%5Cdpi%7B130%7D%5Cbg%7Bwhite%7DH%3D%5Cbegin%7Bbmatrix%7D%201%20%26%200%20%26%201%20%26%201%20%26%201%20%26%200%20%26%200%20%5C%5C%201%20%26%201%20%26%201%20%26%200%20%26%200%20%26%201%20%26%200%20%5C%5C%200%20%26%201%20%26%201%20%26%201%20%26%200%20%26%200%20%26%201%20%5Cend%7Bbmatrix%7D)
+
+<details><summary>LaTeX source (for Overleaf)</summary>
+
+```
 $$H=\begin{bmatrix} 1 & 0 & 1 & 1 & 1 & 0 & 0 \\ 1 & 1 & 1 & 0 & 0 & 1 & 0 \\ 0 & 1 & 1 & 1 & 0 & 0 & 1 \end{bmatrix}$$
+```
+
+</details>
 
 **Step 4 — Syndrome equations** $S=RH^T$ (a $1$ in row $j$ of $H$ means that bit feeds $S_j$):
 
@@ -358,13 +438,29 @@ $$S_1=r_1+r_3+r_4+r_5,\quad S_2=r_1+r_2+r_3+r_6,\quad S_3=r_2+r_3+r_4+r_7 .$$
 
 **Restate:** For the systematic $(6,3)$ code with
 
+![matrix](https://latex.codecogs.com/png.image?%5Cdpi%7B130%7D%5Cbg%7Bwhite%7DP%3D%5Cbegin%7Bbmatrix%7D%201%20%26%200%20%26%201%20%5C%5C%200%20%26%201%20%26%201%20%5C%5C%201%20%26%201%20%26%200%20%5Cend%7Bbmatrix%7D)
+
+<details><summary>LaTeX source (for Overleaf)</summary>
+
+```
 $$P=\begin{bmatrix} 1 & 0 & 1 \\ 0 & 1 & 1 \\ 1 & 1 & 0 \end{bmatrix}$$
+```
+
+</details>
 
 the received vector is $R=110010$. Detect and correct the single error and draw the syndrome circuit.
 
 **Step 1 — Build $H^T$.** Since $H=[P^T\mid I_3]$, the matrix $H^T$ is $P$ stacked on top of $I_3$:
 
+![matrix](https://latex.codecogs.com/png.image?%5Cdpi%7B130%7D%5Cbg%7Bwhite%7DH%5ET%3D%5Cbegin%7Bbmatrix%7D%201%20%26%200%20%26%201%20%5C%5C%200%20%26%201%20%26%201%20%5C%5C%201%20%26%201%20%26%200%20%5C%5C%201%20%26%200%20%26%200%20%5C%5C%200%20%26%201%20%26%200%20%5C%5C%200%20%26%200%20%26%201%20%5Cend%7Bbmatrix%7D)
+
+<details><summary>LaTeX source (for Overleaf)</summary>
+
+```
 $$H^T=\begin{bmatrix} 1 & 0 & 1 \\ 0 & 1 & 1 \\ 1 & 1 & 0 \\ 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{bmatrix}$$
+```
+
+</details>
 
 **Step 2 — Syndrome $S=RH^T$** with $R=(r_1\dots r_6)=110010$:
 
@@ -392,15 +488,39 @@ $$\boxed{C=110110.}$$
 
 **Step 2 — Read $H^T$** (row $i$ = coefficients of $r_i$ in $[S_1\,S_2\,S_3]$):
 
+![matrix](https://latex.codecogs.com/png.image?%5Cdpi%7B130%7D%5Cbg%7Bwhite%7DH%5ET%3D%5Cbegin%7Bbmatrix%7D%201%20%26%201%20%26%201%20%5C%5C%201%20%26%201%20%26%200%20%5C%5C%201%20%26%200%20%26%201%20%5C%5C%200%20%26%201%20%26%201%20%5C%5C%201%20%26%200%20%26%200%20%5C%5C%200%20%26%201%20%26%200%20%5C%5C%200%20%26%200%20%26%201%20%5Cend%7Bbmatrix%7D)
+
+<details><summary>LaTeX source (for Overleaf)</summary>
+
+```
 $$H^T=\begin{bmatrix} 1 & 1 & 1 \\ 1 & 1 & 0 \\ 1 & 0 & 1 \\ 0 & 1 & 1 \\ 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{bmatrix}$$
+```
+
+</details>
 
 **Step 3 — Parity-check matrix $H=[P^T\mid I_3]$** (transpose of $H^T$):
 
+![matrix](https://latex.codecogs.com/png.image?%5Cdpi%7B130%7D%5Cbg%7Bwhite%7DH%3D%5Cbegin%7Bbmatrix%7D%201%20%26%201%20%26%201%20%26%200%20%26%201%20%26%200%20%26%200%20%5C%5C%201%20%26%201%20%26%200%20%26%201%20%26%200%20%26%201%20%26%200%20%5C%5C%201%20%26%200%20%26%201%20%26%201%20%26%200%20%26%200%20%26%201%20%5Cend%7Bbmatrix%7D)
+
+<details><summary>LaTeX source (for Overleaf)</summary>
+
+```
 $$H=\begin{bmatrix} 1 & 1 & 1 & 0 & 1 & 0 & 0 \\ 1 & 1 & 0 & 1 & 0 & 1 & 0 \\ 1 & 0 & 1 & 1 & 0 & 0 & 1 \end{bmatrix}$$
+```
+
+</details>
 
 **Step 4 — Generator matrix $G=[I_4\mid P]$**, where $P$ is the transpose of the first four columns of $H$:
 
+![matrix](https://latex.codecogs.com/png.image?%5Cdpi%7B130%7D%5Cbg%7Bwhite%7DG%3D%5Cbegin%7Bbmatrix%7D%201%20%26%200%20%26%200%20%26%200%20%26%201%20%26%201%20%26%201%20%5C%5C%200%20%26%201%20%26%200%20%26%200%20%26%201%20%26%201%20%26%200%20%5C%5C%200%20%26%200%20%26%201%20%26%200%20%26%201%20%26%200%20%26%201%20%5C%5C%200%20%26%200%20%26%200%20%26%201%20%26%200%20%26%201%20%26%201%20%5Cend%7Bbmatrix%7D)
+
+<details><summary>LaTeX source (for Overleaf)</summary>
+
+```
 $$G=\begin{bmatrix} 1 & 0 & 0 & 0 & 1 & 1 & 1 \\ 0 & 1 & 0 & 0 & 1 & 1 & 0 \\ 0 & 0 & 1 & 0 & 1 & 0 & 1 \\ 0 & 0 & 0 & 1 & 0 & 1 & 1 \end{bmatrix}$$
+```
+
+</details>
 
 i.e. check bits $C_5=d_1+d_2+d_3,\ C_6=d_1+d_2+d_4,\ C_7=d_1+d_3+d_4$.
 
@@ -717,7 +837,15 @@ So $n-k=8$, $n=15$, $k=7$: a $(15,7)$ cyclic code.
 
 **Step 2 — Generator matrix** (rows $=g(x),x g(x),\dots,x^{6}g(x)$). With $g=1\,0\,0\,0\,1\,0\,1\,1\,1$ (bits for $x^0\dots x^8$):
 
+![matrix](https://latex.codecogs.com/png.image?%5Cdpi%7B130%7D%5Cbg%7Bwhite%7DG%3D%5Cbegin%7Bbmatrix%7D%201%260%260%260%261%260%261%261%261%260%260%260%260%260%260%20%5C%5C%200%261%260%260%260%261%260%261%261%261%260%260%260%260%260%20%5C%5C%200%260%261%260%260%260%261%260%261%261%261%260%260%260%260%20%5C%5C%200%260%260%261%260%260%260%261%260%261%261%261%260%260%260%20%5C%5C%200%260%260%260%261%260%260%260%261%260%261%261%261%260%260%20%5C%5C%200%260%260%260%260%261%260%260%260%261%260%261%261%261%260%20%5C%5C%200%260%260%260%260%260%261%260%260%260%261%260%261%261%261%20%5Cend%7Bbmatrix%7D)
+
+<details><summary>LaTeX source (for Overleaf)</summary>
+
+```
 $$G=\begin{bmatrix} 1&0&0&0&1&0&1&1&1&0&0&0&0&0&0 \\ 0&1&0&0&0&1&0&1&1&1&0&0&0&0&0 \\ 0&0&1&0&0&0&1&0&1&1&1&0&0&0&0 \\ 0&0&0&1&0&0&0&1&0&1&1&1&0&0&0 \\ 0&0&0&0&1&0&0&0&1&0&1&1&1&0&0 \\ 0&0&0&0&0&1&0&0&0&1&0&1&1&1&0 \\ 0&0&0&0&0&0&1&0&0&0&1&0&1&1&1 \end{bmatrix}$$
+```
+
+</details>
 
 **Step 3 — Parity polynomial** $h(x)=\dfrac{x^{15}+1}{g(x)}$. Long division gives
 
@@ -725,7 +853,15 @@ $$h(x)=x^7+x^6+x^4+1.$$
 
 **Step 4 — Parity-check matrix** (rows $=x^{j}h(x^{-1})$ for $j=7,8,\dots,14$). The reciprocal pattern of $h$ is $1+x+x^3+x^7$, shifted down each row:
 
+![matrix](https://latex.codecogs.com/png.image?%5Cdpi%7B130%7D%5Cbg%7Bwhite%7DH%3D%5Cbegin%7Bbmatrix%7D%201%261%260%261%260%260%260%261%260%260%260%260%260%260%260%20%5C%5C%200%261%261%260%261%260%260%260%261%260%260%260%260%260%260%20%5C%5C%200%260%261%261%260%261%260%260%260%261%260%260%260%260%260%20%5C%5C%200%260%260%261%261%260%261%260%260%260%261%260%260%260%260%20%5C%5C%200%260%260%260%261%261%260%261%260%260%260%261%260%260%260%20%5C%5C%200%260%260%260%260%261%261%260%261%260%260%260%261%260%260%20%5C%5C%200%260%260%260%260%260%261%261%260%261%260%260%260%261%260%20%5C%5C%200%260%260%260%260%260%260%261%261%260%261%260%260%260%261%20%5Cend%7Bbmatrix%7D)
+
+<details><summary>LaTeX source (for Overleaf)</summary>
+
+```
 $$H=\begin{bmatrix} 1&1&0&1&0&0&0&1&0&0&0&0&0&0&0 \\ 0&1&1&0&1&0&0&0&1&0&0&0&0&0&0 \\ 0&0&1&1&0&1&0&0&0&1&0&0&0&0&0 \\ 0&0&0&1&1&0&1&0&0&0&1&0&0&0&0 \\ 0&0&0&0&1&1&0&1&0&0&0&1&0&0&0 \\ 0&0&0&0&0&1&1&0&1&0&0&0&1&0&0 \\ 0&0&0&0&0&0&1&1&0&1&0&0&0&1&0 \\ 0&0&0&0&0&0&0&1&1&0&1&0&0&0&1 \end{bmatrix}$$
+```
+
+</details>
 
 > **Steps explained:** Multiply the two factors to get $g(x)$ (degree 8 ⇒ $(15,7)$). Shifting $g(x)$ across 7 rows builds $G$. Dividing $x^{15}+1$ by $g(x)$ gives $h(x)$; shifting the reciprocal of $h(x)$ across 8 rows builds $H$. (Both can be row-reduced to systematic form if required.)
 
@@ -1007,7 +1143,15 @@ $$G=[\,I_k\mid P\,]$$
 - **Used in:** Q3, Q4, Q5, Q6, Q8, Q10, Q16.
 
 ### 6. Parity-check matrix
+![matrix](https://latex.codecogs.com/png.image?%5Cdpi%7B130%7D%5Cbg%7Bwhite%7DH%3D%5B%5C%2CP%5ET%5Cmid%20I%5F%7Bn%2Dk%7D%5C%2C%5D%2C%5Cqquad%20H%5ET%3D%5Cbegin%7Bbmatrix%7DP%5C%5C%20I%5F%7Bn%2Dk%7D%5Cend%7Bbmatrix%7D)
+
+<details><summary>LaTeX source (for Overleaf)</summary>
+
+```
 $$H=[\,P^T\mid I_{n-k}\,],\qquad H^T=\begin{bmatrix}P\\ I_{n-k}\end{bmatrix}$$
+```
+
+</details>
 - **Used in:** Q5, Q7, Q8, Q9, Q10, Q16.
 
 ### 7. Codeword / generator orthogonality
