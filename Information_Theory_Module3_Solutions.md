@@ -487,7 +487,18 @@ $$\boxed{C = 1 - h = 1 - 0.8113 = 0.1887\ \text{bits/symbol}}$$
 
 **Step 1 — Set up the matrix equation.** Multiply the channel matrix $P(Y/X)$ by the unknown column vector $\mathbf{Q}=[Q_1,\dots,Q_n]^{T}$, and set it equal to a column vector whose $i$-th entry is the **row-sum** $\sum_j P_{ij}\log_2 P_{ij}$ of that same row:
 
-$$\begin{bmatrix} P_{11} & P_{12} & \cdots & P_{1n} \\ P_{21} & P_{22} & \cdots & P_{2n} \\ \vdots & \vdots & \ddots & \vdots \\ P_{n1} & P_{n2} & \cdots & P_{nn} \end{bmatrix} \begin{bmatrix} Q_1 \\ Q_2 \\ \vdots \\ Q_n \end{bmatrix} = \begin{bmatrix} \sum_j P_{1j}\log_2 P_{1j} \\ \sum_j P_{2j}\log_2 P_{2j} \\ \vdots \\ \sum_j P_{nj}\log_2 P_{nj} \end{bmatrix}$$
+![Muroga matrix equation - general form](https://latex.codecogs.com/png.image?%5Cdpi%7B120%7D%5Cbg%7Bwhite%7D%5Cbegin%7Bbmatrix%7D%20P%5F%7B11%7D%20%26%20P%5F%7B12%7D%20%26%20%5Ccdots%20%26%20P%5F%7B1n%7D%20%5C%5C%20P%5F%7B21%7D%20%26%20P%5F%7B22%7D%20%26%20%5Ccdots%20%26%20P%5F%7B2n%7D%20%5C%5C%20%5Cvdots%20%26%20%5Cvdots%20%26%20%5Cddots%20%26%20%5Cvdots%20%5C%5C%20P%5F%7Bn1%7D%20%26%20P%5F%7Bn2%7D%20%26%20%5Ccdots%20%26%20P%5F%7Bnn%7D%20%5Cend%7Bbmatrix%7D%5Cbegin%7Bbmatrix%7D%20Q%5F1%20%5C%5C%20Q%5F2%20%5C%5C%20%5Cvdots%20%5C%5C%20Q%5Fn%20%5Cend%7Bbmatrix%7D%3D%5Cbegin%7Bbmatrix%7D%20%5Csum%5Fj%20P%5F%7B1j%7D%5Clog%5F2%20P%5F%7B1j%7D%20%5C%5C%20%5Csum%5Fj%20P%5F%7B2j%7D%5Clog%5F2%20P%5F%7B2j%7D%20%5C%5C%20%5Cvdots%20%5C%5C%20%5Csum%5Fj%20P%5F%7Bnj%7D%5Clog%5F2%20P%5F%7Bnj%7D%20%5Cend%7Bbmatrix%7D)
+
+<details><summary>LaTeX source for the equation above</summary>
+
+```latex
+\begin{bmatrix} P_{11} & P_{12} & \cdots & P_{1n} \\ P_{21} & P_{22} & \cdots & P_{2n} \\ \vdots & \vdots & \ddots & \vdots \\ P_{n1} & P_{n2} & \cdots & P_{nn} \end{bmatrix}
+\begin{bmatrix} Q_1 \\ Q_2 \\ \vdots \\ Q_n \end{bmatrix}
+=
+\begin{bmatrix} \sum_j P_{1j}\log_2 P_{1j} \\ \sum_j P_{2j}\log_2 P_{2j} \\ \vdots \\ \sum_j P_{nj}\log_2 P_{nj} \end{bmatrix}
+```
+
+</details>
 
 The left matrix is the **channel matrix** $P(Y/X)$; the middle column is the unknown vector $\mathbf{Q}$; the right column is the **row-sums** vector. Here $P_{ij} = P(y_j\,|\,x_i)$ is the entry in **row $i$, column $j$** of the channel matrix.
 
@@ -541,7 +552,20 @@ $$
 
 **Step 1 — Write the matrix equation** $P(Y/X)\,\mathbf{Q} = \mathbf{r}$, where each RHS entry is that row's $\sum_j P_{ij}\log_2 P_{ij}$:
 
-$$\begin{bmatrix} 0.8 & 0.2 & 0 \\ 0.1 & 0.8 & 0.1 \\ 0 & 0.2 & 0.8 \end{bmatrix} \begin{bmatrix} Q_1 \\ Q_2 \\ Q_3 \end{bmatrix} = \begin{bmatrix} 0.8\log_2 0.8 + 0.2\log_2 0.2 \\ 0.1\log_2 0.1 + 0.8\log_2 0.8 + 0.1\log_2 0.1 \\ 0.2\log_2 0.2 + 0.8\log_2 0.8 \end{bmatrix} = \begin{bmatrix} -0.7219 \\ -0.9219 \\ -0.7219 \end{bmatrix}$$
+![Muroga matrix equation - Q12](https://latex.codecogs.com/png.image?%5Cdpi%7B120%7D%5Cbg%7Bwhite%7D%5Cbegin%7Bbmatrix%7D%200%2E8%20%26%200%2E2%20%26%200%20%5C%5C%200%2E1%20%26%200%2E8%20%26%200%2E1%20%5C%5C%200%20%26%200%2E2%20%26%200%2E8%20%5Cend%7Bbmatrix%7D%5Cbegin%7Bbmatrix%7D%20Q%5F1%20%5C%5C%20Q%5F2%20%5C%5C%20Q%5F3%20%5Cend%7Bbmatrix%7D%3D%5Cbegin%7Bbmatrix%7D%200%2E8%5Clog%5F2%200%2E8%20%2B%200%2E2%5Clog%5F2%200%2E2%20%5C%5C%200%2E1%5Clog%5F2%200%2E1%20%2B%200%2E8%5Clog%5F2%200%2E8%20%2B%200%2E1%5Clog%5F2%200%2E1%20%5C%5C%200%2E2%5Clog%5F2%200%2E2%20%2B%200%2E8%5Clog%5F2%200%2E8%20%5Cend%7Bbmatrix%7D%3D%5Cbegin%7Bbmatrix%7D%20%2D0%2E7219%20%5C%5C%20%2D0%2E9219%20%5C%5C%20%2D0%2E7219%20%5Cend%7Bbmatrix%7D)
+
+<details><summary>LaTeX source for the equation above</summary>
+
+```latex
+\begin{bmatrix} 0.8 & 0.2 & 0 \\ 0.1 & 0.8 & 0.1 \\ 0 & 0.2 & 0.8 \end{bmatrix}
+\begin{bmatrix} Q_1 \\ Q_2 \\ Q_3 \end{bmatrix}
+=
+\begin{bmatrix} 0.8\log_2 0.8 + 0.2\log_2 0.2 \\ 0.1\log_2 0.1 + 0.8\log_2 0.8 + 0.1\log_2 0.1 \\ 0.2\log_2 0.2 + 0.8\log_2 0.8 \end{bmatrix}
+=
+\begin{bmatrix} -0.7219 \\ -0.9219 \\ -0.7219 \end{bmatrix}
+```
+
+</details>
 
 **Step 2 — Expand into 3 simultaneous equations** (each row of the matrix product):
 
@@ -598,7 +622,20 @@ $$
 
 **Step 1 — Write the matrix equation** $P(Y/X)\,\mathbf{Q} = \mathbf{r}$:
 
-$$\begin{bmatrix} 3/4 & 1/4 \\ 1/4 & 3/4 \end{bmatrix} \begin{bmatrix} Q_1 \\ Q_2 \end{bmatrix} = \begin{bmatrix} \tfrac34\log_2\tfrac34 + \tfrac14\log_2\tfrac14 \\ \tfrac14\log_2\tfrac14 + \tfrac34\log_2\tfrac34 \end{bmatrix} = \begin{bmatrix} -0.8113 \\ -0.8113 \end{bmatrix}$$
+![Muroga matrix equation - Q13 BSC](https://latex.codecogs.com/png.image?%5Cdpi%7B120%7D%5Cbg%7Bwhite%7D%5Cbegin%7Bbmatrix%7D%203%2F4%20%26%201%2F4%20%5C%5C%201%2F4%20%26%203%2F4%20%5Cend%7Bbmatrix%7D%5Cbegin%7Bbmatrix%7D%20Q%5F1%20%5C%5C%20Q%5F2%20%5Cend%7Bbmatrix%7D%3D%5Cbegin%7Bbmatrix%7D%20%5Cfrac34%5Clog%5F2%5Cfrac34%20%2B%20%5Cfrac14%5Clog%5F2%5Cfrac14%20%5C%5C%20%5Cfrac14%5Clog%5F2%5Cfrac14%20%2B%20%5Cfrac34%5Clog%5F2%5Cfrac34%20%5Cend%7Bbmatrix%7D%3D%5Cbegin%7Bbmatrix%7D%20%2D0%2E8113%20%5C%5C%20%2D0%2E8113%20%5Cend%7Bbmatrix%7D)
+
+<details><summary>LaTeX source for the equation above</summary>
+
+```latex
+\begin{bmatrix} 3/4 & 1/4 \\ 1/4 & 3/4 \end{bmatrix}
+\begin{bmatrix} Q_1 \\ Q_2 \end{bmatrix}
+=
+\begin{bmatrix} \frac34\log_2\frac34 + \frac14\log_2\frac14 \\ \frac14\log_2\frac14 + \frac34\log_2\frac34 \end{bmatrix}
+=
+\begin{bmatrix} -0.8113 \\ -0.8113 \end{bmatrix}
+```
+
+</details>
 
 **Step 2 — Expand into 2 simultaneous equations:**
 
