@@ -62,7 +62,7 @@ $$R = r_s \, H(S)\quad \text{bits/sec}$$
 
 **(v) Redundancy** — The fraction of the source's capacity that is "wasted" because the symbols are not equally likely.
 
-$$\text{Redundancy} = 1 - \eta = 1 - \frac{H(S)}{H_{max}}, \qquad H_{max}=\log_2 N$$
+$$\text{Redundancy} = 1 - \eta = 1 - \frac{H(S)}{H_{max}} \qquad H_{max}=\log_2 N$$
 
 where $\eta$ = efficiency, $N$ = number of symbols.
 
@@ -151,7 +151,7 @@ $$R=r_s \, I = 30 \times 22.05\times10^{5} = 66.15\times10^{5}\ \text{bits/sec}$
 
 **Probabilities:** dash is half as probable: $P_{dash}=\tfrac12 P_{dot}$, and $P_{dot}+P_{dash}=1$:
 
-$$P_{dot}+\tfrac12 P_{dot}=1 \Rightarrow P_{dot}=\tfrac23,\quad P_{dash}=\tfrac13$$
+$$P_{dot}+\tfrac12 P_{dot}=1 \Rightarrow P_{dot}=\tfrac23 \quad P_{dash}=\tfrac13$$
 
 **Entropy:**
 
@@ -234,7 +234,7 @@ The curve is concave ($\cap$-shaped), symmetric about $P = 0.5$, with **maximum 
 
 **(i)**
 
-$$I_{dot}=\log_2\tfrac{4}{3}=0.415\ \text{bits},\qquad I_{dash}=\log_2 4=2\ \text{bits}$$
+$$I_{dot}=\log_2\tfrac{4}{3}=0.415\ \text{bits} \qquad I_{dash}=\log_2 4=2\ \text{bits}$$
 
 **(ii)**
 
@@ -368,7 +368,7 @@ States: S (straight), L (left), R (right). Build the model from the data:
 
 **State equations:**
 
-$$P(S)=\tfrac12P(S)+\tfrac12P(L)+\tfrac12P(R),\quad P(L)=\tfrac12P(L)+\tfrac14P(S),\quad P(R)=\tfrac12P(R)+\tfrac14P(S)$$
+$$P(S)=\tfrac12P(S)+\tfrac12P(L)+\tfrac12P(R) \quad P(L)=\tfrac12P(L)+\tfrac14P(S) \quad P(R)=\tfrac12P(R)+\tfrac14P(S)$$
 
 Solving (with $\sum P=1$): $P(S)=\tfrac12,\ P(L)=\tfrac14,\ P(R)=\tfrac14$
 
@@ -376,7 +376,7 @@ Solving (with $\sum P=1$): $P(S)=\tfrac12,\ P(L)=\tfrac14,\ P(R)=\tfrac14$
 
 $$H_S=\tfrac12\log_2 2+\tfrac14\log_2 4+\tfrac14\log_2 4=1.5\ \text{bits}$$
 
-$$H_L=\tfrac12\log_2 2+\tfrac12\log_2 2=1\ \text{bit},\qquad H_R=1\ \text{bit}$$
+$$H_L=\tfrac12\log_2 2+\tfrac12\log_2 2=1\ \text{bit} \qquad H_R=1\ \text{bit}$$
 
 **Source entropy:**
 
@@ -420,11 +420,11 @@ $$R=r_s H=1.25\ \text{bits/sec}$$
 
 States: A (abroad), B (MBA/Civil), C (Industry).
 
-$$P(A)=\tfrac12P(A)+\tfrac12P(B)+\tfrac12P(C),\quad P(B)=\tfrac12P(B)+\tfrac14P(A),\quad P(C)=\tfrac12P(C)+\tfrac14P(A)$$
+$$P(A)=\tfrac12P(A)+\tfrac12P(B)+\tfrac12P(C) \quad P(B)=\tfrac12P(B)+\tfrac14P(A) \quad P(C)=\tfrac12P(C)+\tfrac14P(A)$$
 
 **Solving:** $P(A)=\tfrac12,\ P(B)=\tfrac14,\ P(C)=\tfrac14$
 
-$$H_A=\tfrac12\log_2 2+\tfrac14\log_2 4+\tfrac14\log_2 4=1.5,\quad H_B=1,\quad H_C=1$$
+$$H_A=\tfrac12\log_2 2+\tfrac14\log_2 4+\tfrac14\log_2 4=1.5 \qquad H_B=1 \qquad H_C=1$$
 
 $$H=\tfrac12(1.5)+\tfrac14(1)+\tfrac14(1)=1.25\ \text{bits/symbol}$$
 
@@ -444,7 +444,7 @@ States: 1(X) and 2(Y). Transitions: $1\!\to\!1=\tfrac23(X),\ 1\!\to\!2=\tfrac13(
 
 **Entropy of each state:**
 
-$$H_1=\tfrac23\log_2\tfrac32+\tfrac13\log_2 3=0.9183,\qquad H_2=\tfrac14\log_2 4+\tfrac34\log_2\tfrac43=0.8113$$
+$$H_1=\tfrac23\log_2\tfrac32+\tfrac13\log_2 3=0.9183 \qquad H_2=\tfrac14\log_2 4+\tfrac34\log_2\tfrac43=0.8113$$
 
 **Source entropy:**
 
@@ -492,15 +492,15 @@ Transitions: $A\!\to\!A=0.6,\ A\!\to\!B=0.4;\ B\!\to\!C=0.5,\ B\!\to\!D=0.5;\ C\
 
 **(i) State probabilities** — solving the balance equations (all in terms of $P(D)$):
 
-$$P(A)=1.25P(D),\ P(B)=P(D),\ P(C)=1.25P(D),\ \text{sum}\Rightarrow 4.5P(D)=1$$
+$$P(A)=1.25P(D) \quad P(B)=P(D) \quad P(C)=1.25P(D) \quad \text{sum}\Rightarrow 4.5P(D)=1$$
 
-$$P(A)=P(C)=\tfrac{5}{18},\quad P(B)=P(D)=\tfrac29$$
+$$P(A)=P(C)=\tfrac{5}{18} \qquad P(B)=P(D)=\tfrac29$$
 
 **(ii) Entropy of each state:**
 
-$$H_A=0.6\log_2\tfrac1{0.6}+0.4\log_2\tfrac1{0.4}=0.971,\quad H_C=0.971$$
+$$H_A=0.6\log_2\tfrac1{0.6}+0.4\log_2\tfrac1{0.4}=0.971 \qquad H_C=0.971$$
 
-$$H_B=0.5\log_2 2+0.5\log_2 2=1,\quad H_D=1$$
+$$H_B=0.5\log_2 2+0.5\log_2 2=1 \qquad H_D=1$$
 
 **(iii) Source entropy:**
 
@@ -564,7 +564,7 @@ $$H=0.4286(1.371)+0.3214(1.486)+0.25(1.571)=1.458\ \text{bits/sym}$$
 
 First-symbol probabilities (sum of $\tfrac13 \times$ outgoing to each symbol):
 
-$$P(A)=0.4,\ P(B)=0.333,\ P(C)=0.267$$
+$$P(A)=0.4 \quad P(B)=0.333 \quad P(C)=0.267$$
 
 $$G_1=0.4\log_2\tfrac1{0.4}+0.333\log_2\tfrac1{0.333}+0.267\log_2\tfrac1{0.267}=1.566$$
 
@@ -700,7 +700,7 @@ Transitions: 00→00 0.8, 00→01 0.2; 01→10 0.5, 01→11 0.5; 10→00 0.5, 10
 
 **State probabilities:** From 00→00 balance, $0.2P(00)=0.5P(10)\Rightarrow P(00)=2.5P(10)$; similarly $P(11)=2.5P(01)$. By symmetry $P(00)=P(11)$, $P(01)=P(10)$. Let $P(01)=P(10)=x$, $P(00)=P(11)=2.5x$. Sum: $7x=1$.
 
-$$P(00)=P(11)=\tfrac{5}{14}=0.357,\quad P(01)=P(10)=\tfrac17=0.143$$
+$$P(00)=P(11)=\tfrac{5}{14}=0.357 \qquad P(01)=P(10)=\tfrac17=0.143$$
 
 **Entropy of each state:**
 
@@ -748,7 +748,7 @@ $$H=2(0.357)(0.722)+2(0.143)(1)=0.516+0.286=0.801\ \text{bits/sym}$$
 
 **State probabilities:** $\tfrac16P(1)=\tfrac35P(2)\Rightarrow P(1)=3.6P(2)$; sum $= 1 \Rightarrow 4.6P(2)=1$
 
-$$P(1)=\tfrac{18}{23}=0.783,\quad P(2)=\tfrac{5}{23}=0.217$$
+$$P(1)=\tfrac{18}{23}=0.783 \qquad P(2)=\tfrac{5}{23}=0.217$$
 
 **Entropy of each state:**
 
@@ -865,7 +865,7 @@ $$I(m_1,m_2)=I(m_1)+I(m_2)$$
 
 ### 10. State (stationary) probability balance
 
-$$P(\text{state }j)=\sum_i P(\text{state }i)\,p_{ij},\qquad \sum_j P_j=1$$
+$$P(\text{state }j)=\sum_i P(\text{state }i)\,p_{ij} \qquad \sum_j P_j=1$$
 
 - $p_{ij}$ = transition probability from state $i$ to state $j$.
 - **Used in:** Q11–Q20 (step 1 of every Markov problem).
