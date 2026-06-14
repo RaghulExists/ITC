@@ -487,27 +487,7 @@ $$\boxed{C = 1 - h = 1 - 0.8113 = 0.1887\ \text{bits/symbol}}$$
 
 **Step 1 — Set up the matrix equation.** Multiply the channel matrix $P(Y/X)$ by the unknown column vector $\mathbf{Q}=[Q_1,\dots,Q_n]^{T}$, and set it equal to a column vector whose $i$-th entry is the **row-sum** $\sum_j P_{ij}\log_2 P_{ij}$ of that same row:
 
-$$
-\begin{bmatrix}
-P_{11} & P_{12} & \cdots & P_{1n} \\
-P_{21} & P_{22} & \cdots & P_{2n} \\
-\vdots & \vdots & \ddots & \vdots \\
-P_{n1} & P_{n2} & \cdots & P_{nn}
-\end{bmatrix}
-\begin{bmatrix}
-Q_1 \\
-Q_2 \\
-\vdots \\
-Q_n
-\end{bmatrix}
-=
-\begin{bmatrix}
-P_{11}\log P_{11} + P_{12}\log P_{12} + \cdots + P_{1n}\log P_{1n} \\
-P_{21}\log P_{21} + P_{22}\log P_{22} + \cdots + P_{2n}\log P_{2n} \\
-\vdots \\
-P_{n1}\log P_{n1} + P_{n2}\log P_{n2} + \cdots + P_{nn}\log P_{nn}
-\end{bmatrix}
-$$
+$$\begin{bmatrix} P_{11} & P_{12} & \cdots & P_{1n} \\ P_{21} & P_{22} & \cdots & P_{2n} \\ \vdots & \vdots & \ddots & \vdots \\ P_{n1} & P_{n2} & \cdots & P_{nn} \end{bmatrix} \begin{bmatrix} Q_1 \\ Q_2 \\ \vdots \\ Q_n \end{bmatrix} = \begin{bmatrix} \sum_j P_{1j}\log_2 P_{1j} \\ \sum_j P_{2j}\log_2 P_{2j} \\ \vdots \\ \sum_j P_{nj}\log_2 P_{nj} \end{bmatrix}$$
 
 The left matrix is the **channel matrix** $P(Y/X)$; the middle column is the unknown vector $\mathbf{Q}$; the right column is the **row-sums** vector. Here $P_{ij} = P(y_j\,|\,x_i)$ is the entry in **row $i$, column $j$** of the channel matrix.
 
@@ -561,30 +541,7 @@ $$
 
 **Step 1 — Write the matrix equation** $P(Y/X)\,\mathbf{Q} = \mathbf{r}$, where each RHS entry is that row's $\sum_j P_{ij}\log_2 P_{ij}$:
 
-$$
-\begin{bmatrix}
-0.8 & 0.2 & 0 \\
-0.1 & 0.8 & 0.1 \\
-0 & 0.2 & 0.8
-\end{bmatrix}
-\begin{bmatrix}
-Q_1 \\
-Q_2 \\
-Q_3
-\end{bmatrix}
-=
-\begin{bmatrix}
-0.8\log_2 0.8 + 0.2\log_2 0.2 + 0 \\
-0.1\log_2 0.1 + 0.8\log_2 0.8 + 0.1\log_2 0.1 \\
-0 + 0.2\log_2 0.2 + 0.8\log_2 0.8
-\end{bmatrix}
-=
-\begin{bmatrix}
--0.7219 \\
--0.9219 \\
--0.7219
-\end{bmatrix}
-$$
+$$\begin{bmatrix} 0.8 & 0.2 & 0 \\ 0.1 & 0.8 & 0.1 \\ 0 & 0.2 & 0.8 \end{bmatrix} \begin{bmatrix} Q_1 \\ Q_2 \\ Q_3 \end{bmatrix} = \begin{bmatrix} 0.8\log_2 0.8 + 0.2\log_2 0.2 \\ 0.1\log_2 0.1 + 0.8\log_2 0.8 + 0.1\log_2 0.1 \\ 0.2\log_2 0.2 + 0.8\log_2 0.8 \end{bmatrix} = \begin{bmatrix} -0.7219 \\ -0.9219 \\ -0.7219 \end{bmatrix}$$
 
 **Step 2 — Expand into 3 simultaneous equations** (each row of the matrix product):
 
@@ -641,26 +598,7 @@ $$
 
 **Step 1 — Write the matrix equation** $P(Y/X)\,\mathbf{Q} = \mathbf{r}$:
 
-$$
-\begin{bmatrix}
-3/4 & 1/4 \\
-1/4 & 3/4
-\end{bmatrix}
-\begin{bmatrix}
-Q_1 \\
-Q_2
-\end{bmatrix}
-=
-\begin{bmatrix}
-\tfrac34\log_2\tfrac34 + \tfrac14\log_2\tfrac14 \\
-\tfrac14\log_2\tfrac14 + \tfrac34\log_2\tfrac34
-\end{bmatrix}
-=
-\begin{bmatrix}
--0.8113 \\
--0.8113
-\end{bmatrix}
-$$
+$$\begin{bmatrix} 3/4 & 1/4 \\ 1/4 & 3/4 \end{bmatrix} \begin{bmatrix} Q_1 \\ Q_2 \end{bmatrix} = \begin{bmatrix} \tfrac34\log_2\tfrac34 + \tfrac14\log_2\tfrac14 \\ \tfrac14\log_2\tfrac14 + \tfrac34\log_2\tfrac34 \end{bmatrix} = \begin{bmatrix} -0.8113 \\ -0.8113 \end{bmatrix}$$
 
 **Step 2 — Expand into 2 simultaneous equations:**
 
